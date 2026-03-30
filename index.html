@@ -38,9 +38,9 @@
 
         /* --- РЕДАКТОР --- */
         #sidebar { width: 450px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px rgba(0,0,0,0.9); }
-        #sidebar-header { padding: 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; }
-        #sidebar-header img { width: 50px; height: 50px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
-        #sidebar-title { font-family: 'Orbitron'; font-size: 16px; color: #00e5ff; font-weight: bold; }
+        #sidebar-header { padding: 25px; display: flex; flex-direction: column; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; text-align: center; }
+        #sidebar-header img { width: 80px; height: 80px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
+        #sidebar-title { font-family: 'Orbitron'; font-size: 1.5rem; color: #00e5ff; font-weight: bold; }
 
         .tabs { display: flex; background: #111; border-bottom: 1px solid #222; flex-wrap: wrap; }
         .tab-btn { flex: 1 1 20%; padding: 12px 2px; background: none; border: none; color: #777; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; }
@@ -59,6 +59,8 @@
         .row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
         .color-pick { width: 55px; height: 38px; border: 1px solid #333; cursor: pointer; background: none; padding: 0; }
         
+        #sidebar-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px; text-align: center; font-size: 12px; color: #aaa; background: #030503; border-top: 1px solid #222; z-index: 10; font-family: 'Exo 2'; }
+
         /* --- ИГРА --- */
         #game-area { flex-grow: 1; position: relative; overflow: hidden; background-color: var(--bg-color); background-image: var(--bg-img); background-size: cover; background-position: center; }
         
@@ -95,7 +97,7 @@
 <div id="sidebar">
     <div id="sidebar-header">
         <img src="https://img.genially.com/67961b32a116fb001568a75e/673752a5-8d4d-40d1-9b5f-f04ebd91a27c.png" alt="Logo">
-        <div id="sidebar-title">Hover Quiz: Editor</div>
+        <div id="sidebar-title">Hover Quiz: Editor by English Bootcamp</div>
     </div>
 
     <div class="tabs">
@@ -252,17 +254,20 @@ Check the diary and enter the code.</textarea>
 
     <div id="tab-export" class="tab-content">
         <div class="group">
-            <h3>Генерация кода для Genially</h3>
-            <label>Ссылка на ваш репозиторий GitHub:</label>
-            <input type="text" id="github-url" value="https://oksanabashlykova10-eng.github.io/ИМЯ_РЕПОЗИТОРИЯ">
-            <p style="font-size: 11px; color: #888; margin-top: 5px;">Замените ИМЯ_РЕПОЗИТОРИЯ на название вашей папки.</p>
+            <h3>СГЕНЕРИРОВАТЬ ССЫЛКИ ДЛЯ ВСТРАИВАНИЯ</h3>
+            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Для генерации используется твой репозиторий: oksanabashlykova10-eng.github.io/hover-quiz/</p>
             
-            <label style="margin-top: 15px;">Готовый код iframe:</label>
-            <textarea id="export-output" readonly style="height: 120px; font-size: 12px; color: #39FF14; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Код скопирован!');"></textarea>
+            <label>1. Готовая ссылка HTML (для прямой вставки):</label>
+            <textarea id="html-direct-output" readonly style="height: 60px; font-size: 12px; color: #00e5ff; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Ссылка HTML скопирована!');"></textarea>
             
-            <button style="width:100%; padding:15px; background: #39FF14; border:none; color:black; font-family:'Orbitron', sans-serif; font-weight:bold; font-size:16px; cursor:pointer; margin-top:15px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ IFRAME</button>
+            <label style="margin-top: 15px;">2. Готовый код iframe (для Genially):</label>
+            <textarea id="iframe-export-output" readonly style="height: 120px; font-size: 12px; color: #39FF14; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Код iframe скопирована!');"></textarea>
+            
+            <button style="width:100%; padding:15px; background: #39FF14; border:none; color:black; font-family:'Orbitron', sans-serif; font-weight:bold; font-size:16px; cursor:pointer; margin-top:15px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ ССЫЛКИ</button>
         </div>
     </div>
+
+    <div id="sidebar-footer">© English Bootcamp Games. All rights reserved.</div>
 </div>
 
 <div id="game-area">
@@ -290,6 +295,7 @@ Check the diary and enter the code.</textarea>
 <script>
     let gameData = [], squares = [], slotsFilled = 0, isModalOpen = false, activeSquare = null, audioCtx = null;
     const defaultColors = ['#FF3366', '#33CCFF', '#FFCC00', '#CC33FF', '#39FF14', '#FF6600', '#00FFFF', '#FF00FF'];
+    const githubPagesBaseUrl = "https://oksanabashlykova10-eng.github.io/hover-quiz/";
 
     window.onload = () => {
         const hash = window.forcedPayload ? '#play=' + window.forcedPayload : window.location.hash;
@@ -312,7 +318,7 @@ Check the diary and enter the code.</textarea>
     function saveConfig() {
         const c = {};
         document.querySelectorAll('.config-group input, .config-group select, .config-group textarea').forEach(el => {
-            if(el.id && el.id !== 'export-output' && el.id !== 'github-url') {
+            if(el.id && el.id !== 'iframe-export-output' && el.id !== 'html-direct-output') {
                 c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
             }
         });
@@ -337,16 +343,15 @@ Check the diary and enter the code.</textarea>
         } catch(e) { console.error(e); }
     }
 
-    // Генерация ссылки для Genially
+    // Генерация ссылки для Genially и HTML
     function generateIframe() { 
         const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
         
-        let base = document.getElementById('github-url').value.trim();
-        if(!base.startsWith('http')) base = 'https://' + base;
-        if(base.endsWith('/')) base = base.slice(0, -1);
+        let gameHtmlLink = githubPagesBaseUrl + "#play=" + b64;
+        let iframeCode = `<iframe src="${gameHtmlLink}" style="width: 100%; height: 700px; border: none; border-radius: 10px; background: transparent;" allow="autoplay; fullscreen" allowtransparency="true" allowfullscreen></iframe>`; 
         
-        let code = `<iframe src="${base}/#play=${b64}" style="width: 100%; height: 700px; border: none; border-radius: 10px; background: transparent;" allow="autoplay; fullscreen" allowtransparency="true" allowfullscreen></iframe>`; 
-        document.getElementById('export-output').value = code;
+        document.getElementById('html-direct-output').value = gameHtmlLink;
+        document.getElementById('iframe-export-output').value = iframeCode;
     }
 
     function hexToRgba(hex, alpha) {
@@ -437,8 +442,6 @@ Check the diary and enter the code.</textarea>
         const mode = document.getElementById('sq-color-mode') ? document.getElementById('sq-color-mode').value : 'multi';
         const sColor = document.getElementById('sq-single-color') ? document.getElementById('sq-single-color').value : '#00ffff';
         
-        const gameArea = document.getElementById('game-area');
-        
         gameData.forEach((d, i) => {
             let sq = document.createElement('div');
             sq.className = 'square';
@@ -454,9 +457,8 @@ Check the diary and enter the code.</textarea>
             }
             sq.appendChild(content);
 
-            // Начальные координаты строго внутри игровой области
-            sq.x = Math.random() * (gameArea.clientWidth - 100) + 20;
-            sq.y = 150 + Math.random() * (gameArea.clientHeight - 250);
+            sq.x = Math.random() * (window.innerWidth - 510);
+            sq.y = 150 + Math.random() * (window.innerHeight - 250);
             sq.vx = (Math.random() - 0.5);
             sq.vy = (Math.random() - 0.5);
             sq.isFloating = false;
@@ -465,7 +467,7 @@ Check the diary and enter the code.</textarea>
             sq.style.top = sq.y + 'px';
 
             sq.onclick = () => { initAudio(); playSfx('tap'); openQuestion(sq); };
-            gameArea.appendChild(sq);
+            document.getElementById('game-area').appendChild(sq);
             squares.push(sq);
         });
         liveUpdate();
@@ -492,22 +494,17 @@ Check the diary and enter the code.</textarea>
 
     function animate() {
         let speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sq-speed')) || 3.5;
-        let gameArea = document.getElementById('game-area');
-        
-        // Строгие границы ИМЕННО игрового поля
-        let maxW = gameArea.clientWidth - 60;
-        let maxH = gameArea.clientHeight - 60;
+        let sW = document.body.classList.contains('play-mode') ? 0 : 450;
         
         squares.forEach(sq => {
             if (!sq.isFloating) return;
             sq.x += sq.vx * speed;
             sq.y += sq.vy * speed;
 
-            // Отскок от краев поля
-            if (sq.x <= 0) { sq.x = 0; sq.vx *= -1; }
-            if (sq.x >= maxW) { sq.x = maxW; sq.vx *= -1; }
-            if (sq.y <= 130) { sq.y = 130; sq.vy *= -1; } // Отскок от верхней панели со слотами
-            if (sq.y >= maxH) { sq.y = maxH; sq.vy *= -1; }
+            if (sq.x <= sW) { sq.x = sW; sq.vx *= -1; }
+            if (sq.x >= window.innerWidth - 60) { sq.x = window.innerWidth - 60; sq.vx *= -1; }
+            if (sq.y <= 150) { sq.y = 150; sq.vy *= -1; }
+            if (sq.y >= window.innerHeight - 60) { sq.y = window.innerHeight - 60; sq.vy *= -1; }
 
             sq.style.left = sq.x + 'px';
             sq.style.top = sq.y + 'px';
@@ -538,7 +535,7 @@ Check the diary and enter the code.</textarea>
 
         document.getElementById('modal-overlay').style.display = 'flex';
 
-        // Озвучка
+        // TTS
         let lang = document.getElementById('game-lang').value;
         if(lang !== 'none' && window.speechSynthesis) {
             window.speechSynthesis.cancel();
@@ -561,14 +558,23 @@ Check the diary and enter the code.</textarea>
             isModalOpen = false;
 
             let target = document.getElementById('slot-' + tSlot);
-            let r = target.getBoundingClientRect();
+            let slotRect = target.getBoundingClientRect();
             let gameRect = document.getElementById('game-area').getBoundingClientRect();
-            
+            let sphereRect = activeSquare.getBoundingClientRect();
+
+            // 1. Получаем центры
+            let slotCenterX = slotRect.left + (slotRect.width / 2);
+            let slotCenterY = slotRect.top + (slotRect.height / 2);
+
+            // 2. Летим к центру слота, выравнивая центр сферы
+            // Новое положение сферы рассчитывается
+            // Позиция верхнего левого угла сферы при выравнивании центров
+            let newSphereLeft = slotCenterX - (sphereRect.width / 2) - gameRect.left;
+            let newSphereTop = slotCenterY - (sphereRect.height / 2) - gameRect.top;
+
             activeSquare.classList.add('flying');
-            
-            // Летим к слоту
-            activeSquare.style.left = (r.left - gameRect.left) + 'px';
-            activeSquare.style.top = (r.top - gameRect.top) + 'px';
+            activeSquare.style.left = newSphereLeft + 'px';
+            activeSquare.style.top = newSphereTop + 'px';
             
             setTimeout(() => {
                 playSfx('clack');
@@ -613,7 +619,19 @@ Check the diary and enter the code.</textarea>
         if (!audioCtx) return;
         const n = audioCtx.currentTime;
         if(t==='tap'){
-            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(600,n);o.frequency.exponentialRampToValueAtTime(800,n+0.1);g.gain.setValueAtTime(0.3,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.1);
+            // (Внутри playSfx - t==='tap' block)
+            const o=audioCtx.createOscillator();
+            const g=audioCtx.createGain();
+            o.type='square'; // Square wave for more 'distinct' character
+            // Установка гораздо более низкой частоты
+            o.frequency.setValueAtTime(80, n); // Low starting pitch
+            o.frequency.exponentialRampToValueAtTime(120, n+0.1); // Slight ramp-up
+            g.gain.setValueAtTime(0.5, n); // Slightly louder gain
+            g.gain.exponentialRampToValueAtTime(0.01, n+0.1); // Quick fade-out
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(n);
+            o.stop(n+0.1);
         }
         else if(t==='correct'){
             const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.setValueAtTime(400,n);o.frequency.exponentialRampToValueAtTime(800,n+0.2);o.frequency.exponentialRampToValueAtTime(1200,n+0.4);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.5,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.4);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.4);
