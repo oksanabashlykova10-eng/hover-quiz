@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hover Quiz: Editor by English Bootcamp</title>
+    <title>Hover Quiz: Full Editor</title>
     <style>
         :root {
             --primary: #4a90e2;
@@ -15,223 +15,71 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg); color: var(--text);
+            display: flex; height: 100vh; overflow: hidden;
         }
 
         /* Боковая панель (Редактор) */
         .editor-sidebar {
-            width: 320px;
-            background-color: var(--panel-bg);
-            padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10;
+            width: 400px; background-color: var(--panel-bg);
+            padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto; display: flex; flex-direction: column; gap: 15px; z-index: 10;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        .header { text-align: center; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 15px; }
+        
         .emblem {
-            width: 150px; 
-            height: 150px;
-            background-color: #fff;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 4px solid var(--primary);
+            width: 120px; height: 120px; background-color: #fff;
+            border-radius: 50%; margin: 0 auto 10px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; border: 4px solid var(--primary);
         }
+        .emblem img { width: 100%; height: 100%; object-fit: cover; }
+        
+        h1 { font-size: 1.2rem; margin: 0; color: var(--primary); text-transform: uppercase; }
 
-        .emblem img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .section-title { font-size: 1.1rem; color: #00ffcc; margin-top: 10px; border-bottom: 1px dashed #555; padding-bottom: 5px; }
 
-        h1 {
-            font-size: 1.2rem;
-            margin: 0;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        label {
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; color: #ccc; }
         input[type="number"], input[type="text"], input[type="color"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background: #1e1e2f;
-            color: white;
-            font-size: 1rem;
+            padding: 8px; border-radius: 5px; border: 1px solid #555; background: #1e1e2f; color: white;
         }
+
+        .question-card {
+            background: #1e1e2f; padding: 10px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 10px;
+        }
+        .question-card h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--primary); }
 
         button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-top: 10px;
+            background-color: var(--primary); color: white; border: none;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
-
-        button:hover {
-            background-color: #357abd;
-        }
-
-        .btn-success { background-color: #27ae60; }
+        button:hover { background-color: #357abd; }
+        .btn-success { background-color: #27ae60; margin-top: 20px; }
         .btn-success:hover { background-color: #219653; }
 
-        /* Игровая зона */
-        .preview-area {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .slots-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            min-height: 60px;
-        }
-
-        .slot {
-            width: 60px;
-            height: 60px;
-            background-color: var(--slot-bg);
-            border: 2px dashed #777;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #777;
-            transition: all 0.3s;
-        }
-
-        .game-area {
-            flex: 1;
-            position: relative;
-            border: 2px solid #444;
-            border-radius: 10px;
-            overflow: hidden;
-            background: radial-gradient(circle, #2a2a40 0%, #1e1e2f 100%);
-        }
-
+        /* Игровая зона (Предпросмотр) */
+        .preview-area { flex: 1; position: relative; display: flex; flex-direction: column; padding: 20px; }
+        .slots-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; min-height: 60px; }
+        .slot { width: 60px; height: 60px; background-color: var(--slot-bg); border: 2px dashed #777; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #777; }
+        .game-area { flex: 1; position: relative; border: 2px solid #444; border-radius: 10px; overflow: hidden; background: radial-gradient(circle, #2a2a40 0%, #1e1e2f 100%); }
+        
         .tablet {
-            width: 50px;
-            height: 50px;
-            background-color: var(--tablet);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            position: absolute;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-            user-select: none;
-            animation: float 3s ease-in-out infinite alternate;
+            width: 50px; height: 50px; background-color: var(--tablet); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold;
+            position: absolute; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            animation: float 3s ease-in-out infinite alternate; user-select: none; transition: transform 0.2s;
         }
-
         .tablet:hover { transform: scale(1.1); }
+        @keyframes float { from { transform: translateY(0px); } to { transform: translateY(-15px); } }
 
-        @keyframes float {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-15px); }
-        }
-
-        /* Модальные окна */
-        .modal-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 99;
-        }
-
-        .modal {
-            display: none;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--panel-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 100;
-            text-align: center;
-            width: 300px;
-            border: 2px solid var(--primary);
-        }
-
-        .modal-export {
-            width: 600px;
-            max-width: 90%;
-            border-color: #27ae60;
-        }
-
-        .modal h2 { margin-top: 0; }
-        .modal-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
-        
-        textarea {
-            width: 100%;
-            height: 150px;
-            background: #1e1e2f;
-            color: #00ffcc;
-            border: 1px solid #555;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            resize: vertical;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        
-        .close-export {
-            position: absolute;
-            top: 10px; right: 15px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: #aaa;
-        }
-        .close-export:hover { color: white; }
-
+        /* Окно экспорта */
+        .modal-overlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); z-index: 99; }
+        .modal-export { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--panel-bg); padding: 30px; border-radius: 10px; z-index: 100; width: 600px; max-width: 90%; border: 2px solid #27ae60; }
+        .modal-export textarea { width: 100%; height: 200px; background: #1e1e2f; color: #00ffcc; border: 1px solid #555; padding: 10px; font-family: monospace; resize: vertical; margin-bottom: 10px; box-sizing: border-box; }
+        .close-export { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem; color: #aaa; }
     </style>
 </head>
 <body>
@@ -239,171 +87,147 @@
     <div class="editor-sidebar">
         <div class="header">
             <div class="emblem">
-                <img src="https://via.placeholder.com/150/ffffff/4a90e2?text=Logo" alt="English Bootcamp Logo" id="logo-preview">
+                <img src="https://via.placeholder.com/150/ffffff/4a90e2?text=Logo" id="logo-preview">
             </div>
-            <h1>Hover Quiz: Editor<br><small style="font-size: 0.7rem; color: #aaa;">by English Bootcamp</small></h1>
+            <h1>Hover Quiz: Editor</h1>
         </div>
 
+        <div class="section-title">Визуальные настройки</div>
         <div class="form-group">
-            <label for="logo-url">URL вашей эмблемы (картинка):</label>
-            <input type="text" id="logo-url" placeholder="https://..." value="">
+            <label>URL эмблемы (картинка):</label>
+            <input type="text" id="logo-url" placeholder="https://..." value="https://via.placeholder.com/150/ffffff/4a90e2?text=Logo">
         </div>
-
         <div class="form-group">
-            <label for="question-count">Количество вопросов:</label>
-            <input type="number" id="question-count" min="1" max="30" value="8">
-        </div>
-
-        <div class="form-group">
-            <label for="tablet-color">Цвет табличек:</label>
+            <label>Цвет табличек:</label>
             <input type="color" id="tablet-color" value="#ff7e67">
         </div>
+
+        <div class="section-title">Контент игры</div>
+        <div class="form-group">
+            <label>Количество вопросов:</label>
+            <input type="number" id="question-count" min="1" max="20" value="3">
+        </div>
         
-        <button id="update-btn">Применить настройки</button>
-        <button id="export-btn" class="btn-success">Экспорт кода (HTML + Genially)</button>
+        <div id="questions-container">
+            </div>
+
+        <button id="export-btn" class="btn-success">Экспорт готовой игры</button>
     </div>
 
     <div class="preview-area" id="preview-area">
         <div class="slots-container" id="slots-container"></div>
         <div class="game-area" id="game-area"></div>
 
-        <div class="modal-overlay" id="question-overlay"></div>
-        <div class="modal" id="question-modal">
-            <h2>Вопрос <span id="current-q-num"></span></h2>
-            <p>Предпросмотр механики ответа.</p>
-            <div class="modal-buttons">
-                <button id="correct-btn" class="btn-success">Верно</button>
-                <button id="wrong-btn" style="background-color: #e74c3c;">Ошибка</button>
-            </div>
-        </div>
-
-        <div class="modal modal-export" id="export-modal">
+        <div class="modal-overlay" id="overlay"></div>
+        <div class="modal-export" id="export-modal">
             <span class="close-export" id="close-export">&times;</span>
-            <h2>Код вашей игры</h2>
-            
-            <label style="text-align: left; display: block; margin-bottom: 5px;">1. Автономный HTML (сохрани как .html и залей на GitHub):</label>
+            <h2 style="margin-top:0;">Код вашей автономной игры</h2>
+            <p style="font-size: 0.9rem; color: #ccc;">Сохраните этот текст в файл <b>index.html</b> и загрузите в свой репозиторий на GitHub. Весь ваш текст и настройки уже внутри!</p>
             <textarea id="html-output" readonly></textarea>
-            <button id="copy-html-btn" style="margin-bottom: 20px;">Скопировать HTML</button>
-
-            <label style="text-align: left; display: block; margin-bottom: 5px;">2. Код для вставки в Genially (iframe):</label>
-            <textarea id="iframe-output" readonly></textarea>
-            <button id="copy-iframe-btn">Скопировать iframe</button>
+            <button id="copy-html-btn" style="width: 100%;">Скопировать код</button>
         </div>
     </div>
 
     <script>
-        const updateBtn = document.getElementById('update-btn');
-        const exportBtn = document.getElementById('export-btn');
-        const questionCountInput = document.getElementById('question-count');
+        const qCountInput = document.getElementById('question-count');
+        const qContainer = document.getElementById('questions-container');
         const slotsContainer = document.getElementById('slots-container');
         const gameArea = document.getElementById('game-area');
         const logoUrlInput = document.getElementById('logo-url');
         const logoPreview = document.getElementById('logo-preview');
         const tabletColorInput = document.getElementById('tablet-color');
-        
-        const modal = document.getElementById('question-modal');
-        const overlay = document.getElementById('question-overlay');
-        const currentQNum = document.getElementById('current-q-num');
-        const correctBtn = document.getElementById('correct-btn');
-        const wrongBtn = document.getElementById('wrong-btn');
-        
-        const exportModal = document.getElementById('export-modal');
-        const closeExportBtn = document.getElementById('close-export');
-        const htmlOutput = document.getElementById('html-output');
-        const iframeOutput = document.getElementById('iframe-output');
-        
-        let activeTablet = null;
         let generatedTabletsData = [];
 
-        function updateGame() {
+        // Примеры для A1 уровня, чтобы поля не были пустыми
+        const sampleQuestions = [
+            { q: "I ___ a teacher.", a1: "am", a2: "is", a3: "are" },
+            { q: "She ___ playing tennis.", a1: "is", a2: "am", a3: "are" },
+            { q: "___ they your friends?", a1: "Are", a2: "Is", a3: "Do" }
+        ];
+
+        function renderEditorFields() {
+            const count = parseInt(qCountInput.value) || 3;
+            qContainer.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const sample = sampleQuestions[i-1] || { q: "", a1: "", a2: "", a3: "" };
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <h3>Вопрос ${i}</h3>
+                    <div class="form-group">
+                        <input type="text" id="q-${i}-text" placeholder="Текст вопроса..." value="${sample.q}">
+                    </div>
+                    <div class="form-group" style="margin-top:5px;">
+                        <input type="text" id="q-${i}-correct" placeholder="Правильный ответ" value="${sample.a1}" style="border-color: #27ae60;">
+                    </div>
+                    <div class="form-group" style="margin-top:5px;">
+                        <input type="text" id="q-${i}-wrong1" placeholder="Неправильный вариант 1" value="${sample.a2}">
+                        <input type="text" id="q-${i}-wrong2" placeholder="Неправильный вариант 2" value="${sample.a3}">
+                    </div>
+                `;
+                qContainer.appendChild(card);
+            }
+            updatePreview();
+        }
+
+        function updatePreview() {
             if (logoUrlInput.value) logoPreview.src = logoUrlInput.value;
             document.documentElement.style.setProperty('--tablet', tabletColorInput.value);
             
             slotsContainer.innerHTML = '';
             gameArea.innerHTML = '';
             generatedTabletsData = [];
-
-            const count = parseInt(questionCountInput.value) || 8;
+            const count = parseInt(qCountInput.value) || 3;
 
             for (let i = 1; i <= count; i++) {
                 const slot = document.createElement('div');
-                slot.className = 'slot';
-                slot.id = 'slot-' + i;
+                slot.className = 'slot'; slot.id = 'slot-' + i;
                 slotsContainer.appendChild(slot);
 
                 const tablet = document.createElement('div');
-                tablet.className = 'tablet';
-                tablet.textContent = i;
-                tablet.dataset.id = i;
+                tablet.className = 'tablet'; tablet.textContent = i;
                 
                 const randomX = Math.floor(Math.random() * 80) + 10; 
                 const randomY = Math.floor(Math.random() * 70) + 10; 
                 const randomDelay = Math.random() * 2;
                 
-                tablet.style.left = randomX + '%';
-                tablet.style.top = randomY + '%';
+                tablet.style.left = randomX + '%'; tablet.style.top = randomY + '%';
                 tablet.style.animationDelay = randomDelay + 's';
-
-                tablet.addEventListener('click', () => openQuestion(tablet, i));
                 gameArea.appendChild(tablet);
 
-                // Сохраняем данные для экспорта
                 generatedTabletsData.push({ id: i, x: randomX, y: randomY, delay: randomDelay });
             }
         }
 
-        function openQuestion(tabletElement, num) {
-            activeTablet = tabletElement;
-            currentQNum.textContent = num;
-            overlay.style.display = 'block';
-            modal.style.display = 'block';
-        }
+        // Слушатели событий
+        qCountInput.addEventListener('change', renderEditorFields);
+        logoUrlInput.addEventListener('input', updatePreview);
+        tabletColorInput.addEventListener('input', updatePreview);
 
-        function closeQuestion() {
-            overlay.style.display = 'none';
-            modal.style.display = 'none';
-        }
-
-        correctBtn.addEventListener('click', () => {
-            closeQuestion();
-            if (activeTablet) {
-                const id = activeTablet.dataset.id;
-                const targetSlot = document.getElementById('slot-' + id);
-                const slotRect = targetSlot.getBoundingClientRect();
-                const gameRect = gameArea.getBoundingClientRect();
-                
-                const targetX = slotRect.left - gameRect.left + (slotRect.width / 2) - 25; 
-                const targetY = slotRect.top - gameRect.top + (slotRect.height / 2) - 25;
-
-                activeTablet.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
-                activeTablet.style.left = targetX + 'px';
-                activeTablet.style.top = targetY + 'px';
-                activeTablet.style.transform = 'scale(1)'; 
-                activeTablet.style.animation = 'none';
-                activeTablet.style.pointerEvents = 'none';
-                activeTablet.style.backgroundColor = '#27ae60'; // Зеленеет при попадании
-            }
-        });
-
-        wrongBtn.addEventListener('click', () => {
-            closeQuestion();
-            activeTablet = null;
-        });
-
-        // ГЕНЕРАЦИЯ ЭКСПОРТНОГО КОДА
-        exportBtn.addEventListener('click', () => {
-            const count = parseInt(questionCountInput.value) || 8;
+        // Генерация ИТОГОВОГО КОДА ИГРЫ
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const count = parseInt(qCountInput.value) || 3;
             const tColor = tabletColorInput.value;
-            const logoSrc = logoUrlInput.value || 'https://via.placeholder.com/150/ffffff/4a90e2?text=Logo';
+            const logoSrc = logoUrlInput.value;
 
-            // Примеры вопросов A1
+            // Сбор данных из полей
             let questionsJS = 'const questions = {\n';
             for(let i=1; i<=count; i++) {
-                questionsJS += `            ${i}: { q: "Fill in the gap: I ___ a student.", answers: ["am", "is", "are"], correct: 0 },\n`;
+                const qText = document.getElementById(`q-${i}-text`).value.replace(/"/g, '\\"');
+                const correct = document.getElementById(`q-${i}-correct`).value.replace(/"/g, '\\"');
+                const w1 = document.getElementById(`q-${i}-wrong1`).value.replace(/"/g, '\\"');
+                const w2 = document.getElementById(`q-${i}-wrong2`).value.replace(/"/g, '\\"');
+                
+                // Формируем массив ответов (правильный всегда первый в базе, но в игре мы его перемешаем)
+                let ansArray = `["${correct}", "${w1}"`;
+                if(w2) ansArray += `, "${w2}"`;
+                ansArray += `]`;
+
+                questionsJS += `            ${i}: { q: "${qText}", answers: ${ansArray}, correct: "${correct}" },\n`;
             }
             questionsJS += '        };';
 
-            // Генерируем слоты и таблички как HTML строки
             let slotsHTML = '';
             let tabletsHTML = '';
             generatedTabletsData.forEach(item => {
@@ -420,7 +244,7 @@
     <style>
         body { margin: 0; background: #1e1e2f; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         .header { display: flex; align-items: center; justify-content: center; padding: 10px; background: #2a2a40; }
-        .logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #4a90e2; }
+        .logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #4a90e2; background: white;}
         .slots-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
         .slot { width: 60px; height: 60px; background: #3f3f5a; border: 2px dashed #777; border-radius: 10px; }
         .game-area { flex: 1; position: relative; background: radial-gradient(circle, #2a2a40 0%, #1e1e2f 100%); overflow: hidden; margin: 0 20px 20px; border-radius: 10px; border: 2px solid #444; }
@@ -430,7 +254,7 @@
         
         .modal-overlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); z-index: 99; }
         .modal { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #2a2a40; padding: 30px; border-radius: 10px; z-index: 100; text-align: center; border: 2px solid #4a90e2; min-width: 300px;}
-        .ans-btn { background: #4a90e2; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        .ans-btn { background: #4a90e2; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; font-size: 1rem; width: 80%; display: block; margin: 10px auto; }
         .ans-btn:hover { background: #357abd; }
     </style>
 </head>
@@ -461,6 +285,15 @@ ${tabletsHTML}
         const ansContainer = document.getElementById('answers-container');
         const gameArea = document.getElementById('game-area');
 
+        // Функция перемешивания ответов
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         document.querySelectorAll('.tablet').forEach(tab => {
             tab.addEventListener('click', function() {
                 const id = this.dataset.id;
@@ -469,11 +302,14 @@ ${tabletsHTML}
                 qText.textContent = qData.q;
                 ansContainer.innerHTML = '';
                 
-                qData.answers.forEach((ans, index) => {
+                // Создаем копию ответов и перемешиваем
+                let answersMix = shuffleArray([...qData.answers]).filter(a => a.trim() !== "");
+                
+                answersMix.forEach(ans => {
                     const btn = document.createElement('button');
                     btn.className = 'ans-btn';
                     btn.textContent = ans;
-                    btn.onclick = () => checkAnswer(index === qData.correct);
+                    btn.onclick = () => checkAnswer(ans === qData.correct);
                     ansContainer.appendChild(btn);
                 });
                 
@@ -506,38 +342,26 @@ ${tabletsHTML}
 </body>
 </html>`;
 
-            htmlOutput.value = standaloneHTML;
-            
-            // iframe код с плейсхолдером под GitHub Pages
-            iframeOutput.value = `<div style="width: 100%;"><div style="position: relative; padding-bottom: 56.25%; padding-top: 0; height: 0;"><iframe title="Hover Quiz" frameborder="0" width="1200px" height="675px" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://ТВОЙ_ЛОГИН.github.io/ТВОЙ_РЕПОЗИТОРИЙ/game.html" type="text/html" allowscriptaccess="always" allowfullscreen="true" scrolling="yes" allownetworking="all"></iframe></div></div>`;
-
-            overlay.style.display = 'block';
-            exportModal.style.display = 'block';
+            document.getElementById('html-output').value = standaloneHTML;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('export-modal').style.display = 'block';
         });
 
-        closeExportBtn.addEventListener('click', () => {
-            exportModal.style.display = 'none';
-            overlay.style.display = 'none';
+        document.getElementById('close-export').addEventListener('click', () => {
+            document.getElementById('export-modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
         });
 
-        // Функции копирования
         document.getElementById('copy-html-btn').addEventListener('click', () => {
-            htmlOutput.select();
+            const output = document.getElementById('html-output');
+            output.select();
             document.execCommand('copy');
             document.getElementById('copy-html-btn').textContent = 'Скопировано!';
-            setTimeout(() => document.getElementById('copy-html-btn').textContent = 'Скопировать HTML', 2000);
+            setTimeout(() => document.getElementById('copy-html-btn').textContent = 'Скопировать код', 2000);
         });
 
-        document.getElementById('copy-iframe-btn').addEventListener('click', () => {
-            iframeOutput.select();
-            document.execCommand('copy');
-            document.getElementById('copy-iframe-btn').textContent = 'Скопировано!';
-            setTimeout(() => document.getElementById('copy-iframe-btn').textContent = 'Скопировать iframe', 2000);
-        });
-
-        // Запуск
-        updateGame();
-        updateBtn.addEventListener('click', updateGame);
+        // Инициализация при загрузке
+        renderEditorFields();
     </script>
 </body>
 </html>
