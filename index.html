@@ -37,32 +37,28 @@
         body.play-mode #sidebar { display: none !important; }
 
         /* --- РЕДАКТОР --- */
-        #sidebar { width: 500px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px #000; }
+        #sidebar { width: 450px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px rgba(0,0,0,0.9); }
         #sidebar-header { padding: 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; }
-        #sidebar-header img { width: 40px; height: 40px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
-        #sidebar-title { font-family: 'Orbitron'; font-size: 18px; color: #00e5ff; font-weight: bold; }
+        #sidebar-header img { width: 50px; height: 50px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
+        #sidebar-title { font-family: 'Orbitron'; font-size: 16px; color: #00e5ff; font-weight: bold; }
 
         .tabs { display: flex; background: #111; border-bottom: 1px solid #222; flex-wrap: wrap; }
         .tab-btn { flex: 1 1 20%; padding: 12px 2px; background: none; border: none; color: #777; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; }
         .tab-btn.active { color: var(--n-green); background: #0a110a; border-bottom: 3px solid var(--n-green); }
-        .tab-content { flex-grow: 1; padding: 15px; overflow-y: auto; display: none; margin-bottom: 50px; }
+        .tab-content { flex-grow: 1; padding: 15px; overflow-y: auto; display: none; margin-bottom: 20px; scrollbar-width: none;}
+        .tab-content::-webkit-scrollbar { display: none; }
         .tab-content.active { display: block; }
 
         .group { margin-bottom: 20px; background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #1a1a1a; }
         .group h3 { margin: 0 0 12px 0; font-size: 14px; color: #555; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
         .group label { display: block; font-size: 13px; color: var(--n-green); margin-bottom: 6px; font-weight: bold; }
-        .group p.hint { font-size: 12px; color: #ffcc00; margin: 0 0 8px 0; line-height: 1.3; }
-        
-        .instruction-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 12px; margin-bottom: 15px; font-size: 13px; line-height: 1.5; color: #ddd; border-radius: 0 4px 4px 0; }
-        .instruction-box b { color: #ffcc00; }
+        .instruction-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 12px; margin-bottom: 15px; font-size: 13px; line-height: 1.5; color: #ddd; }
 
         input, select, textarea { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 10px; margin-bottom: 12px; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
         textarea { font-family: monospace; white-space: pre; line-height: 1.4; }
         .row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
         .color-pick { width: 55px; height: 38px; border: 1px solid #333; cursor: pointer; background: none; padding: 0; }
         
-        #sidebar-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px; text-align: center; font-size: 12px; color: #aaa; background: #030503; border-top: 1px solid #222; z-index: 10; font-family: 'Exo 2'; }
-
         /* --- ИГРА --- */
         #game-area { flex-grow: 1; position: relative; overflow: hidden; background-color: var(--bg-color); background-image: var(--bg-img); background-size: cover; background-position: center; }
         
@@ -97,9 +93,9 @@
 <body>
 
 <div id="sidebar">
-    <div id="sidebar-header" style="flex-direction: column; padding-bottom: 5px; background: #030503; border-bottom: 1px solid #111;">
-        <img src="https://img.genially.com/67961b32a116fb001568a75e/673752a5-8d4d-40d1-9b5f-f04ebd91a27c.png" alt="Logo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #39FF14; margin: 0 auto; display: block; filter: none;">
-        <div id="sidebar-title" style="text-align: center; font-size: 1.5rem; margin-top: 10px; font-family: 'Orbitron'; color: #00e5ff; font-weight: bold;">Hover Quiz: Editor<br><span style="font-size: 0.8rem; color: #aaa;">by English Bootcamp</span></div>
+    <div id="sidebar-header">
+        <img src="https://img.genially.com/67961b32a116fb001568a75e/673752a5-8d4d-40d1-9b5f-f04ebd91a27c.png" alt="Logo">
+        <div id="sidebar-title">Hover Quiz: Editor</div>
     </div>
 
     <div class="tabs">
@@ -147,16 +143,9 @@
         <div class="group">
             <h3>База Вопросов и Контент Табличек</h3>
             <div class="instruction-box">
-                <b>ИНСТРУКЦИЯ ПО ЗАПОЛНЕНИЮ:</b><br>
-                Пишите элементы строго через вертикальную черту <b>|</b> в таком порядке:<br>
+                Пишите элементы строго через вертикальную черту <b>|</b><br>
                 Вопрос | Верный ответ | Ложный 1 | Ложный 2 | Номер слота | Символ на табличке
             </div>
-            
-            <div class="row" style="margin-bottom: 10px;">
-                <label style="margin: 0;">Количество вопросов:</label>
-                <input type="number" id="q-counter" value="8" min="1" max="30" style="width: 60px; margin: 0; padding: 5px;" onchange="updateQuestionLines(this.value)">
-            </div>
-
             <textarea id="data-input" style="height: 180px;">The number of the Sun is TEN plus THREE | Thirteen | Twelve | Fifteen | 8 | 1
 What is TWO multiplied by FOUR? | Eight | Six | Ten | 7 | 2
 A bar and two dots equals... | Seven | Five | Twelve | 6 | 3
@@ -261,21 +250,19 @@ Check the diary and enter the code.</textarea>
         </div>
     </div>
 
-    <div id="tab-export" class="tab-content config-group">
+    <div id="tab-export" class="tab-content">
         <div class="group">
             <h3>Генерация кода для Genially</h3>
-            <label>Ссылка на ваш репозиторий GitHub (где лежит игра):</label>
-            <input type="text" id="github-url" value="https://oksanabashlykova10-eng.github.io/ИМЯ_РЕПОЗИТОРИЯ" oninput="generateIframe()">
-            <p class="hint">Укажите ссылку на папку, куда вы залили HTML файл игры.</p>
+            <label>Ссылка на ваш репозиторий GitHub:</label>
+            <input type="text" id="github-url" value="https://oksanabashlykova10-eng.github.io/ИМЯ_РЕПОЗИТОРИЯ">
+            <p style="font-size: 11px; color: #888; margin-top: 5px;">Замените ИМЯ_РЕПОЗИТОРИЯ на название вашей папки.</p>
             
             <label style="margin-top: 15px;">Готовый код iframe:</label>
             <textarea id="export-output" readonly style="height: 120px; font-size: 12px; color: #39FF14; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Код скопирован!');"></textarea>
             
-            <button style="width:100%; padding:10px; background:#222; border:1px solid #39FF14; color:#39FF14; font-family:'Orbitron'; cursor:pointer; margin-top:10px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ IFRAME С НАСТРОЙКАМИ</button>
+            <button style="width:100%; padding:15px; background: #39FF14; border:none; color:black; font-family:'Orbitron', sans-serif; font-weight:bold; font-size:16px; cursor:pointer; margin-top:15px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ IFRAME</button>
         </div>
     </div>
-
-    <div id="sidebar-footer">© English Bootcamp Games</div>
 </div>
 
 <div id="game-area">
@@ -321,29 +308,18 @@ Check the diary and enter the code.</textarea>
         btn.classList.add('active');
     }
 
-    // Добавлена функция для регулировки строк вопросов
-    function updateQuestionLines(num) {
-        let textarea = document.getElementById('data-input');
-        let lines = textarea.value.split('\n').filter(l => l.trim() !== '');
-        if (lines.length < num) {
-            for (let i = lines.length; i < num; i++) {
-                lines.push(`Вопрос ${i+1} | Правильный ответ | Неправильный 1 | Неправильный 2 | ${i+1} | ${i+1}`);
-            }
-        } else if (lines.length > num) {
-            lines = lines.slice(0, num);
-        }
-        textarea.value = lines.join('\n');
-        renderGame();
-    }
-
+    // Сохранение настроек
     function saveConfig() {
         const c = {};
         document.querySelectorAll('.config-group input, .config-group select, .config-group textarea').forEach(el => {
-            if(el.id) c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+            if(el.id && el.id !== 'export-output' && el.id !== 'github-url') {
+                c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+            }
         });
         return c;
     }
 
+    // Загрузка настроек
     function loadConfig(payload) {
         try {
             let b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -361,11 +337,12 @@ Check the diary and enter the code.</textarea>
         } catch(e) { console.error(e); }
     }
 
+    // Генерация ссылки для Genially
     function generateIframe() { 
         const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
+        
         let base = document.getElementById('github-url').value.trim();
         if(!base.startsWith('http')) base = 'https://' + base;
-        // Убираем лишний слэш, если он есть в конце
         if(base.endsWith('/')) base = base.slice(0, -1);
         
         let code = `<iframe src="${base}/#play=${b64}" style="width: 100%; height: 700px; border: none; border-radius: 10px; background: transparent;" allow="autoplay; fullscreen" allowtransparency="true" allowfullscreen></iframe>`; 
@@ -424,11 +401,6 @@ Check the diary and enter the code.</textarea>
             sq.style.backgroundColor = (mode === 'single') ? sColor : defaultColors[i % defaultColors.length];
         });
         updateSquaresVisuals();
-        
-        // Обновляем iframe при каждом изменении, если вкладка открыта
-        if(document.getElementById('tab-export').classList.contains('active')) {
-            generateIframe();
-        }
     }
 
     function parseData() {
@@ -441,10 +413,6 @@ Check the diary and enter the code.</textarea>
                 gameData.push({ id: id, q: parts[0], a: ansArr, targetSlot: parseInt(parts[4]) - 1, symbol: parts[5] });
             }
         });
-        // Синхронизируем счетчик с реальным количеством строк
-        if(document.getElementById('q-counter')) {
-            document.getElementById('q-counter').value = gameData.length;
-        }
     }
 
     function renderGame() {
@@ -459,7 +427,6 @@ Check the diary and enter the code.</textarea>
         document.getElementById('win-screen').classList.add('hidden');
         document.getElementById('start-screen').classList.remove('hidden');
 
-        // Создаем слоты
         for(let i=0; i<gameData.length; i++) {
             let s = document.createElement('div');
             s.className = 'slot';
@@ -467,9 +434,10 @@ Check the diary and enter the code.</textarea>
             document.getElementById('top-bar').appendChild(s);
         }
 
-        // Создаем таблички
         const mode = document.getElementById('sq-color-mode') ? document.getElementById('sq-color-mode').value : 'multi';
         const sColor = document.getElementById('sq-single-color') ? document.getElementById('sq-single-color').value : '#00ffff';
+        
+        const gameArea = document.getElementById('game-area');
         
         gameData.forEach((d, i) => {
             let sq = document.createElement('div');
@@ -486,8 +454,9 @@ Check the diary and enter the code.</textarea>
             }
             sq.appendChild(content);
 
-            sq.x = Math.random() * (window.innerWidth - (document.getElementById('sidebar').offsetWidth||0) - 60);
-            sq.y = 150 + Math.random() * (window.innerHeight - 250);
+            // Начальные координаты строго внутри игровой области
+            sq.x = Math.random() * (gameArea.clientWidth - 100) + 20;
+            sq.y = 150 + Math.random() * (gameArea.clientHeight - 250);
             sq.vx = (Math.random() - 0.5);
             sq.vy = (Math.random() - 0.5);
             sq.isFloating = false;
@@ -496,7 +465,7 @@ Check the diary and enter the code.</textarea>
             sq.style.top = sq.y + 'px';
 
             sq.onclick = () => { initAudio(); playSfx('tap'); openQuestion(sq); };
-            document.getElementById('game-area').appendChild(sq);
+            gameArea.appendChild(sq);
             squares.push(sq);
         });
         liveUpdate();
@@ -523,17 +492,22 @@ Check the diary and enter the code.</textarea>
 
     function animate() {
         let speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sq-speed')) || 3.5;
-        let sW = document.body.classList.contains('play-mode') ? 0 : 500;
+        let gameArea = document.getElementById('game-area');
+        
+        // Строгие границы ИМЕННО игрового поля
+        let maxW = gameArea.clientWidth - 60;
+        let maxH = gameArea.clientHeight - 60;
         
         squares.forEach(sq => {
             if (!sq.isFloating) return;
             sq.x += sq.vx * speed;
             sq.y += sq.vy * speed;
 
-            if (sq.x <= sW) { sq.x = sW; sq.vx *= -1; }
-            if (sq.x >= window.innerWidth - 60) { sq.x = window.innerWidth - 60; sq.vx *= -1; }
-            if (sq.y <= 150) { sq.y = 150; sq.vy *= -1; }
-            if (sq.y >= window.innerHeight - 60) { sq.y = window.innerHeight - 60; sq.vy *= -1; }
+            // Отскок от краев поля
+            if (sq.x <= 0) { sq.x = 0; sq.vx *= -1; }
+            if (sq.x >= maxW) { sq.x = maxW; sq.vx *= -1; }
+            if (sq.y <= 130) { sq.y = 130; sq.vy *= -1; } // Отскок от верхней панели со слотами
+            if (sq.y >= maxH) { sq.y = maxH; sq.vy *= -1; }
 
             sq.style.left = sq.x + 'px';
             sq.style.top = sq.y + 'px';
@@ -564,7 +538,7 @@ Check the diary and enter the code.</textarea>
 
         document.getElementById('modal-overlay').style.display = 'flex';
 
-        // TTS - Озвучка вопроса с эффектами голоса
+        // Озвучка
         let lang = document.getElementById('game-lang').value;
         if(lang !== 'none' && window.speechSynthesis) {
             window.speechSynthesis.cancel();
@@ -588,10 +562,13 @@ Check the diary and enter the code.</textarea>
 
             let target = document.getElementById('slot-' + tSlot);
             let r = target.getBoundingClientRect();
+            let gameRect = document.getElementById('game-area').getBoundingClientRect();
             
             activeSquare.classList.add('flying');
-            activeSquare.style.left = r.left + 'px';
-            activeSquare.style.top = r.top + 'px';
+            
+            // Летим к слоту
+            activeSquare.style.left = (r.left - gameRect.left) + 'px';
+            activeSquare.style.top = (r.top - gameRect.top) + 'px';
             
             setTimeout(() => {
                 playSfx('clack');
@@ -623,6 +600,7 @@ Check the diary and enter the code.</textarea>
         }
     }
 
+    // --- ОРИГИНАЛЬНАЯ СИСТЕМА ЗВУКА ИЗ ТВОЕГО ФАЙЛА (без изменений) ---
     function initAudio() {
         if (!audioCtx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
