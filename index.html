@@ -2,287 +2,655 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hover Quiz: Editor by English Bootcamp</title>
+    <title>Hover Quiz: Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cormorant+SC:wght@700&family=Exo+2:wght@300;700&family=Bebas+Neue&family=Kelly+Slab&family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&family=Comfortaa:wght@400;700&family=Special+Elite&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4a90e2;
-            --bg: #1e1e2f;
-            --panel-bg: #2a2a40;
-            --text: #ffffff;
-            --tablet: #ff7e67;
-            --slot-bg: #3f3f5a;
+            --n-green: #39FF14; --n-dark: #004d00; --n-red: #ff003c;
+            
+            /* ФОН */
+            --bg-color: #050805; --bg-alpha: 1; --bg-img: none;
+            
+            /* СТАРТ И ФИНАЛ */
+            --scr-bg: rgba(0,0,0,0.85); --scr-font: 'Orbitron'; --scr-color: #39FF14;
+            --scr-title-sz: 36px; --scr-btn-sz: 20px;
+            
+            /* ЗАДАНИЕ (ВВЕРХУ) */
+            --task-font: 'Orbitron'; --task-color: #39FF14; --task-sz: 18px;
+            
+            /* СЛОТЫ */
+            --slot-bg: rgba(0,0,0,0.5); --slot-border: dashed; --slot-border-color: #39FF14;
+            --slot-neon-act: #39FF14; --slot-sz: 60px;
+            
+            /* ТАБЛИЧКИ */
+            --sq-font: 'Orbitron'; --sq-color: #ffffff; --sq-sz: 24px;
+            --sq-rad: 8px; --sq-neon-color: #ffffff; --sq-neon-sz: 15px;
+            --sq-speed: 3.5;
+            
+            /* МОДАЛЬНОЕ ОКНО */
+            --mod-bg: rgba(10, 20, 10, 0.95); --mod-border: #39FF14; --mod-font: 'Exo 2';
+            --mod-q-sz: 20px; --mod-q-color: #ffffff; --mod-neon-sz: 30px;
+            --mod-btn-bg: rgba(0,0,0,0.5); --mod-btn-color: #39FF14; --mod-btn-sz: 16px;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Exo 2', sans-serif; overflow: hidden; display: flex; background: transparent; }
+        body.play-mode #sidebar { display: none !important; }
 
-        .editor-sidebar {
-            width: 320px;
-            background-color: var(--panel-bg);
-            padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10;
-        }
+        /* --- РЕДАКТОР --- */
+        #sidebar { width: 500px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px #000; }
+        #sidebar-header { padding: 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; }
+        #sidebar-header img { width: 40px; height: 40px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
+        #sidebar-title { font-family: 'Orbitron'; font-size: 18px; color: #00e5ff; font-weight: bold; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        .tabs { display: flex; background: #111; border-bottom: 1px solid #222; flex-wrap: wrap; }
+        .tab-btn { flex: 1 1 20%; padding: 12px 2px; background: none; border: none; color: #777; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; }
+        .tab-btn.active { color: var(--n-green); background: #0a110a; border-bottom: 3px solid var(--n-green); }
+        .tab-content { flex-grow: 1; padding: 15px; overflow-y: auto; display: none; margin-bottom: 50px; }
+        .tab-content.active { display: block; }
 
-        .emblem {
-            width: 150px;
-            height: 150px;
-            background-color: #fff;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 4px solid var(--primary);
-        }
-
-        .emblem img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        h1 {
-            font-size: 1.2rem;
-            margin: 0;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        label {
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
-        input[type="text"], input[type="color"], input[type="number"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background: #1e1e2f;
-            color: white;
-            font-size: 1rem;
-        }
+        .group { margin-bottom: 20px; background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #1a1a1a; }
+        .group h3 { margin: 0 0 12px 0; font-size: 14px; color: #555; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .group label { display: block; font-size: 13px; color: var(--n-green); margin-bottom: 6px; font-weight: bold; }
+        .group p.hint { font-size: 12px; color: #ffcc00; margin: 0 0 8px 0; line-height: 1.3; }
         
-        /* Стили для поля с iframe */
-        textarea {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background: #1e1e2f;
-            color: #00ffcc;
-            font-size: 0.9rem;
-            font-family: monospace;
-            resize: vertical;
-            min-height: 80px;
-        }
+        .instruction-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 12px; margin-bottom: 15px; font-size: 13px; line-height: 1.5; color: #ddd; border-radius: 0 4px 4px 0; }
+        .instruction-box b { color: #ffcc00; }
 
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
+        input, select, textarea { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 10px; margin-bottom: 12px; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        textarea { font-family: monospace; white-space: pre; line-height: 1.4; }
+        .row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .color-pick { width: 55px; height: 38px; border: 1px solid #333; cursor: pointer; background: none; padding: 0; }
+        
+        #sidebar-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px; text-align: center; font-size: 12px; color: #aaa; background: #030503; border-top: 1px solid #222; z-index: 10; font-family: 'Exo 2'; }
 
-        button:hover {
-            background-color: #357abd;
-        }
+        /* --- ИГРА --- */
+        #game-area { flex-grow: 1; position: relative; overflow: hidden; background-color: var(--bg-color); background-image: var(--bg-img); background-size: cover; background-position: center; }
+        
+        #task-title { position: absolute; top: 20px; width: 100%; text-align: center; font-family: var(--task-font); font-size: var(--task-sz); color: var(--task-color); text-shadow: 0 0 15px var(--task-color); z-index: 10; pointer-events: none; }
+        
+        #top-bar { position: absolute; top: 70px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 15px; z-index: 10; pointer-events: none; }
+        .slot { width: var(--slot-sz); height: var(--slot-sz); border-style: var(--slot-border); border-color: var(--slot-border-color); border-width: 2px; border-radius: var(--sq-rad); background: var(--slot-bg); display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        .slot.active-glow { box-shadow: 0 0 20px var(--slot-neon-act), inset 0 0 15px var(--slot-neon-act); border: 2px solid var(--slot-neon-act); background: rgba(0,0,0,0.8); }
 
-        .preview-area {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
+        .square { position: absolute; width: var(--slot-sz); height: var(--slot-sz); border-radius: var(--sq-rad); cursor: pointer; box-shadow: 0 0 var(--sq-neon-sz) var(--sq-neon-color); display: flex; justify-content: center; align-items: center; font-family: var(--sq-font); font-size: var(--sq-sz); color: var(--sq-color); text-shadow: 1px 1px 2px #000; z-index: 5; transition: transform 0.2s; overflow: hidden; background-size: cover; background-position: center; }
+        .square:hover { transform: scale(1.1); }
+        .square.flying { transition: left 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s, box-shadow 0.3s; z-index: 100; transform: scale(1) !important; }
+        .sq-content { transition: opacity 0.3s; }
+        .sq-img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 
-        .slots-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            min-height: 60px;
-        }
+        /* Экраны (Старт/Финал) */
+        .overlay-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--scr-bg); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 3000; transition: 0.5s; backdrop-filter: blur(5px); }
+        .overlay-screen.hidden { opacity: 0; pointer-events: none; }
+        .scr-title { font-family: var(--scr-font); font-size: var(--scr-title-sz); color: var(--scr-color); text-shadow: 0 0 30px var(--scr-color); text-align: center; margin-bottom: 30px; padding: 0 20px; }
+        .scr-btn { padding: 15px 50px; background: rgba(0,0,0,0.7); border: 2px solid var(--scr-color); color: var(--scr-color); font-family: var(--scr-font); font-size: var(--scr-btn-sz); cursor: pointer; transition: 0.3s; border-radius: 8px; letter-spacing: 3px; }
+        .scr-btn:hover { background: var(--scr-color); color: #000; box-shadow: 0 0 30px var(--scr-color); }
 
-        .slot {
-            width: 60px;
-            height: 60px;
-            background-color: var(--slot-bg);
-            border: 2px dashed #777;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #777;
-            transition: all 0.3s;
-        }
-
-        .game-area {
-            flex: 1;
-            position: relative;
-            border: 2px solid #444;
-            border-radius: 10px;
-            overflow: hidden;
-            background: radial-gradient(circle, #2a2a40 0%, #1e1e2f 100%);
-        }
-
-        .tablet {
-            width: 50px;
-            height: 50px;
-            background-color: var(--tablet);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            position: absolute;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-            user-select: none;
-        }
-
-        .tablet:hover {
-            transform: scale(1.1);
-        }
+        /* Модалка с вопросом */
+        #modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+        #modal { background: var(--mod-bg); border: 2px solid var(--mod-border); padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 0 var(--mod-neon-sz) var(--mod-border); max-width: 450px; width: 90%; animation: popIn 0.3s ease-out forwards; }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0;} 100% { transform: scale(1); opacity: 1;} }
+        #q-text { font-size: var(--mod-q-sz); margin-bottom: 20px; font-family: var(--mod-font); color: var(--mod-q-color); line-height: 1.4; }
+        .ans-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: var(--mod-btn-bg); border: 1px solid var(--mod-btn-color); color: var(--mod-btn-color); font-family: var(--mod-font); font-size: var(--mod-btn-sz); font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.3s; }
+        .ans-btn:hover { background: var(--mod-btn-color); color: #000; box-shadow: 0 0 15px var(--mod-btn-color); }
     </style>
 </head>
 <body>
 
-    <div class="editor-sidebar">
-        <div class="header">
-            <div class="emblem">
-                <img src="" alt="English Bootcamp Logo" id="logo-preview" style="display: none;">
-            </div>
-            <h1>Hover Quiz: Editor<br><small style="font-size: 0.7rem; color: #aaa;">by English Bootcamp</small></h1>
-        </div>
-
-        <div class="form-group">
-            <label for="logo-url">URL вашей эмблемы (картинка):</label>
-            <input type="text" id="logo-url" placeholder="https://..." value="">
-        </div>
-        
-        <div class="form-group">
-            <label for="question-count">Количество вопросов:</label>
-            <input type="number" id="question-count" min="1" max="20" value="8">
-        </div>
-
-        <div class="form-group">
-            <label for="tablet-color">Цвет табличек:</label>
-            <input type="color" id="tablet-color" value="#ff7e67">
-        </div>
-        
-        <div class="form-group">
-            <label for="github-repo">Название репозитория на GitHub (для iframe):</label>
-            <input type="text" id="github-repo" placeholder="например: hover-quiz" value="">
-        </div>
-
-        <div class="form-group">
-            <label for="iframe-code">Код для Genially:</label>
-            <textarea id="iframe-code" readonly><iframe src="https://oksanabashlykova10-eng.github.io/ИМЯ_РЕПОЗИТОРИЯ/" width="100%" height="700" style="border:none; border-radius: 10px;" allowfullscreen></iframe></textarea>
-        </div>
-
-        <button id="update-btn">Применить настройки</button>
+<div id="sidebar">
+    <div id="sidebar-header" style="flex-direction: column; padding-bottom: 5px; background: #030503; border-bottom: 1px solid #111;">
+        <img src="https://img.genially.com/67961b32a116fb001568a75e/673752a5-8d4d-40d1-9b5f-f04ebd91a27c.png" alt="Logo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #39FF14; margin: 0 auto; display: block; filter: none;">
+        <div id="sidebar-title" style="text-align: center; font-size: 1.5rem; margin-top: 10px; font-family: 'Orbitron'; color: #00e5ff; font-weight: bold;">Hover Quiz: Editor<br><span style="font-size: 0.8rem; color: #aaa;">by English Bootcamp</span></div>
     </div>
 
-    <div class="preview-area" id="preview-area">
-        <div class="slots-container" id="slots-container">
-            </div>
-
-        <div class="game-area" id="game-area">
-            </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(this, 'tab-data')">1. ДАННЫЕ</button>
+        <button class="tab-btn" onclick="openTab(this, 'tab-screens')">2. ЭКРАНЫ</button>
+        <button class="tab-btn" onclick="openTab(this, 'tab-elements')">3. ЭЛЕМЕНТЫ</button>
+        <button class="tab-btn" onclick="openTab(this, 'tab-bg')">4. ФОН</button>
+        <button class="tab-btn" style="color:var(--n-green);" onclick="openTab(this, 'tab-export')">ЭКСПОРТ</button>
     </div>
 
-    <script>
-        const updateBtn = document.getElementById('update-btn');
-        const logoUrlInput = document.getElementById('logo-url');
-        const logoPreview = document.getElementById('logo-preview');
-        const tabletColorInput = document.getElementById('tablet-color');
-        const questionCountInput = document.getElementById('question-count');
-        const slotsContainer = document.getElementById('slots-container');
-        const gameArea = document.getElementById('game-area');
-        const githubRepoInput = document.getElementById('github-repo');
-        const iframeCodeTextarea = document.getElementById('iframe-code');
+    <div id="tab-data" class="tab-content active config-group">
+        <div class="group">
+            <h3>Голосовой помощник (Озвучка)</h3>
+            <div class="row">
+                <select id="game-lang">
+                    <option value="none">Без озвучки</option>
+                    <option value="en-US">Английский</option>
+                    <option value="ru-RU">Русский</option>
+                    <option value="de-DE">Немецкий</option>
+                    <option value="fr-FR">Французский</option>
+                    <option value="es-ES">Испанский</option>
+                    <option value="zh-CN">Китайский</option>
+                </select>
+                <select id="voice-style">
+                    <option value="normal">Обычный голос</option>
+                    <option value="child">Ребенок (Высокий)</option>
+                    <option value="low">Гигант (Низкий)</option>
+                    <option value="robot">Робот (Техно)</option>
+                </select>
+            </div>
+        </div>
 
-        function updateGame() {
-            // Обновление логотипа
-            if (logoUrlInput.value) {
-                logoPreview.src = logoUrlInput.value;
-                logoPreview.style.display = 'block';
-            } else {
-                logoPreview.style.display = 'none';
+        <div class="group">
+            <h3>Задание на экране</h3>
+            <input type="text" id="task-text" value="DECRYPT THE QUANTUM SEQUENCE" oninput="liveUpdate()">
+            <div class="row">
+                <select id="task-font" onchange="liveUpdate()">
+                    <option value="'Orbitron'">Orbitron (Техно)</option><option value="'Exo 2'">Exo 2 (Космос)</option><option value="'Cormorant SC'">Cormorant (Майя)</option><option value="'Comic Sans MS', cursive">Comic Sans (Комикс)</option><option value="'Cinzel Decorative'">Cinzel (Эпик)</option><option value="'Papyrus', fantasy">Papyrus (Древность)</option><option value="'Montserrat'">Montserrat</option>
+                </select>
+                <input type="color" id="task-color" class="color-pick" value="#39FF14" onchange="liveUpdate()">
+                <input type="number" id="task-sz" value="18" placeholder="Размер px" oninput="liveUpdate()">
+            </div>
+        </div>
+
+        <div class="group">
+            <h3>База Вопросов и Контент Табличек</h3>
+            <div class="instruction-box">
+                <b>ИНСТРУКЦИЯ ПО ЗАПОЛНЕНИЮ:</b><br>
+                Пишите элементы строго через вертикальную черту <b>|</b> в таком порядке:<br>
+                Вопрос | Верный ответ | Ложный 1 | Ложный 2 | Номер слота | Символ на табличке
+            </div>
+            
+            <div class="row" style="margin-bottom: 10px;">
+                <label style="margin: 0;">Количество вопросов:</label>
+                <input type="number" id="q-counter" value="8" min="1" max="30" style="width: 60px; margin: 0; padding: 5px;" onchange="updateQuestionLines(this.value)">
+            </div>
+
+            <textarea id="data-input" style="height: 180px;">The number of the Sun is TEN plus THREE | Thirteen | Twelve | Fifteen | 8 | 1
+What is TWO multiplied by FOUR? | Eight | Six | Ten | 7 | 2
+A bar and two dots equals... | Seven | Five | Twelve | 6 | 3
+Translate to English: Пятнадцать | Fifteen | Fifty | Five | 5 | 4
+How many legs does a spider have? | Eight | Six | Ten | 4 | 5
+Choose the correct spelling: | Twenty | Twentie | Twinty | 3 | 6
+100 divided by 10 is... | Ten | One | Hundred | 2 | 7
+The ancient shell symbol means... | Zero | Infinity | One | 1 | 8</textarea>
+        </div>
+        <button style="width:100%; padding:15px; background:var(--n-green); border:none; color:black; font-family:'Orbitron'; font-weight:bold; font-size:16px; cursor:pointer;" onclick="renderGame()">ПРИМЕНИТЬ ДАННЫЕ</button>
+    </div>
+
+    <div id="tab-screens" class="tab-content config-group">
+        <div class="group">
+            <h3>Стартовый Экран</h3>
+            <label>Заголовок:</label><input type="text" id="start-title" value="QUANTUM CHRONOMETER" oninput="liveUpdate()">
+            <label>Текст на кнопке:</label><input type="text" id="start-btn" value="START SYSTEM" oninput="liveUpdate()">
+        </div>
+        <div class="group">
+            <h3>Финальный Экран (Победа)</h3>
+            <label>Текст победы:</label><textarea id="win-title" rows="3">SYSTEM CALIBRATED!
+Check the diary and enter the code.</textarea>
+            <label>Текст на кнопке:</label><input type="text" id="win-btn" value="REBOOT" oninput="liveUpdate()">
+        </div>
+        <div class="group">
+            <h3>Дизайн Экранов</h3>
+            <select id="scr-font" onchange="liveUpdate()">
+                <option value="'Orbitron'">Orbitron</option><option value="'Exo 2'">Exo 2</option><option value="'Cormorant SC'">Cormorant</option><option value="'Comic Sans MS', cursive">Comic Sans</option><option value="'Cinzel Decorative'">Cinzel</option><option value="'Papyrus', fantasy">Papyrus</option><option value="'Montserrat'">Montserrat</option>
+            </select>
+            <div class="row">
+                <input type="color" id="scr-color" class="color-pick" value="#39FF14" onchange="liveUpdate()">
+                <input type="number" id="scr-title-sz" value="36" placeholder="Заголовок px" oninput="liveUpdate()">
+                <input type="number" id="scr-btn-sz" value="20" placeholder="Кнопка px" oninput="liveUpdate()">
+            </div>
+            <label>Затемнение фона (0-100):</label><input type="number" id="scr-bg-alpha" value="85" oninput="liveUpdate()">
+        </div>
+    </div>
+
+    <div id="tab-elements" class="tab-content config-group">
+        <div class="group">
+            <h3>Парящие Таблички</h3>
+            <label>Цветовой режим:</label>
+            <div class="row">
+                <select id="sq-color-mode" onchange="liveUpdate()">
+                    <option value="multi">Разноцветные (Радуга)</option>
+                    <option value="single">Один цвет (для Сфер)</option>
+                </select>
+                <input type="color" id="sq-single-color" class="color-pick" value="#00ffff" onchange="liveUpdate()">
+            </div>
+            <label>Шрифт и Цвет текста:</label>
+            <div class="row">
+                <select id="sq-font" onchange="liveUpdate()">
+                    <option value="'Orbitron'">Orbitron</option><option value="'Exo 2'">Exo 2</option><option value="'Comic Sans MS', cursive">Comic Sans</option><option value="'Cinzel Decorative'">Cinzel</option>
+                </select>
+                <input type="color" id="sq-color" class="color-pick" value="#ffffff" onchange="liveUpdate()">
+                <input type="number" id="sq-sz" value="24" placeholder="Текст px" oninput="liveUpdate()">
+            </div>
+            <label>Скругление углов (0 - квадрат, 50 - круг):</label> <input type="number" id="sq-rad" value="8" oninput="liveUpdate()">
+            <label>Цвет и размер неонового свечения (в полете):</label>
+            <div class="row">
+                <input type="color" id="sq-neon-color" class="color-pick" value="#00ffff" onchange="liveUpdate()">
+                <input type="number" id="sq-neon-sz" value="15" placeholder="Размер неона" oninput="liveUpdate()">
+            </div>
+            <label style="margin-top: 15px;"><input type="checkbox" id="hide-content" style="width: auto; margin-right: 5px;" onchange="liveUpdate()"> Скрыть символ (цифру/картинку) до попадания в слот</label>
+            <label style="margin-top:10px;">Скорость полета (1 - медленно, 10 - быстро):</label>
+            <input type="range" id="sq-speed" min="1" max="10" step="0.5" value="3.5" oninput="liveUpdate()">
+        </div>
+        <div class="group">
+            <h3>Слоты-приемники (Верхняя панель)</h3>
+            <label>Цвет фона и Прозрачность (0-100):</label>
+            <div class="row"><input type="color" id="slot-bg-hex" class="color-pick" value="#000000" onchange="liveUpdate()"><input type="number" id="slot-bg-alpha" value="50" oninput="liveUpdate()"></div>
+            <label>Рамка слота:</label>
+            <div class="row">
+                <select id="slot-border" onchange="liveUpdate()">
+                    <option value="dashed">Пунктир</option>
+                    <option value="solid">Сплошная</option>
+                    <option value="none">Без рамки</option>
+                </select>
+                <input type="color" id="slot-border-color" class="color-pick" value="#39FF14" onchange="liveUpdate()">
+            </div>
+            <label>Неон при успешном попадании таблички в слот:</label>
+            <input type="color" id="slot-neon-act" class="color-pick" value="#39FF14" onchange="liveUpdate()">
+        </div>
+        <div class="group">
+            <h3>Окно Вопроса</h3>
+            <label>Цвет рамки и Размер неона:</label>
+            <div class="row"><input type="color" id="mod-border" class="color-pick" value="#39FF14" onchange="liveUpdate()"><input type="number" id="mod-neon-sz" value="30" placeholder="Неон px" oninput="liveUpdate()"></div>
+            <label>Цвет и размер текста вопроса:</label>
+            <div class="row"><input type="color" id="mod-q-color" class="color-pick" value="#ffffff" onchange="liveUpdate()"><input type="number" id="mod-q-sz" value="20" oninput="liveUpdate()"></div>
+            <label>Кнопки ответов (Фон и Текст):</label>
+            <div class="row"><input type="color" id="mod-btn-bg" class="color-pick" value="#000000" onchange="liveUpdate()"><input type="color" id="mod-btn-color" class="color-pick" value="#39FF14" onchange="liveUpdate()"></div>
+        </div>
+    </div>
+
+    <div id="tab-bg" class="tab-content config-group">
+        <div class="group">
+            <h3>Фон Игры</h3>
+            <label>Цвет фона и Прозрачность (поставьте 0 для Genially):</label>
+            <div class="row"><input type="color" id="bg-color-hex" class="color-pick" value="#050805" onchange="liveUpdate()"><input type="number" id="bg-alpha" value="100" oninput="liveUpdate()"></div>
+            <label>Фоновая Картинка (URL):</label>
+            <input type="text" id="bg-img" placeholder="Ссылка на фон" oninput="liveUpdate()">
+        </div>
+    </div>
+
+    <div id="tab-export" class="tab-content config-group">
+        <div class="group">
+            <h3>Генерация кода для Genially</h3>
+            <label>Ссылка на ваш репозиторий GitHub (где лежит игра):</label>
+            <input type="text" id="github-url" value="https://oksanabashlykova10-eng.github.io/ИМЯ_РЕПОЗИТОРИЯ" oninput="generateIframe()">
+            <p class="hint">Укажите ссылку на папку, куда вы залили HTML файл игры.</p>
+            
+            <label style="margin-top: 15px;">Готовый код iframe:</label>
+            <textarea id="export-output" readonly style="height: 120px; font-size: 12px; color: #39FF14; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Код скопирован!');"></textarea>
+            
+            <button style="width:100%; padding:10px; background:#222; border:1px solid #39FF14; color:#39FF14; font-family:'Orbitron'; cursor:pointer; margin-top:10px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ IFRAME С НАСТРОЙКАМИ</button>
+        </div>
+    </div>
+
+    <div id="sidebar-footer">© English Bootcamp Games</div>
+</div>
+
+<div id="game-area">
+    <div id="task-title"></div>
+    <div id="top-bar"></div>
+
+    <div id="start-screen" class="overlay-screen">
+        <div class="scr-title" id="disp-start-title"></div>
+        <button class="scr-btn" id="disp-start-btn" onclick="startGame()">START</button>
+    </div>
+
+    <div id="win-screen" class="overlay-screen hidden">
+        <div class="scr-title" id="disp-win-title" style="white-space:pre-wrap;"></div>
+        <button class="scr-btn" id="disp-win-btn" onclick="renderGame()">REBOOT</button>
+    </div>
+
+    <div id="modal-overlay">
+        <div id="modal">
+            <div id="q-text"></div>
+            <div id="options"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let gameData = [], squares = [], slotsFilled = 0, isModalOpen = false, activeSquare = null, audioCtx = null;
+    const defaultColors = ['#FF3366', '#33CCFF', '#FFCC00', '#CC33FF', '#39FF14', '#FF6600', '#00FFFF', '#FF00FF'];
+
+    window.onload = () => {
+        const hash = window.forcedPayload ? '#play=' + window.forcedPayload : window.location.hash;
+        if (hash.startsWith('#play=')) {
+            document.body.classList.add('play-mode');
+            loadConfig(hash.replace('#play=', ''));
+        } else {
+            renderGame();
+        }
+    };
+
+    function openTab(btn, id) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // Добавлена функция для регулировки строк вопросов
+    function updateQuestionLines(num) {
+        let textarea = document.getElementById('data-input');
+        let lines = textarea.value.split('\n').filter(l => l.trim() !== '');
+        if (lines.length < num) {
+            for (let i = lines.length; i < num; i++) {
+                lines.push(`Вопрос ${i+1} | Правильный ответ | Неправильный 1 | Неправильный 2 | ${i+1} | ${i+1}`);
             }
+        } else if (lines.length > num) {
+            lines = lines.slice(0, num);
+        }
+        textarea.value = lines.join('\n');
+        renderGame();
+    }
 
-            // Обновление цвета
-            document.documentElement.style.setProperty('--tablet', tabletColorInput.value);
+    function saveConfig() {
+        const c = {};
+        document.querySelectorAll('.config-group input, .config-group select, .config-group textarea').forEach(el => {
+            if(el.id) c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        return c;
+    }
 
-            // Обновление iframe кода
-            const repoName = githubRepoInput.value.trim() || "ИМЯ_РЕПОЗИТОРИЯ";
-            iframeCodeTextarea.value = `<iframe src="https://oksanabashlykova10-eng.github.io/${repoName}/" width="100%" height="700" style="border:none; border-radius: 10px;" allowfullscreen></iframe>`;
-
-            // Очистка старых слотов и табличек
-            slotsContainer.innerHTML = '';
-            gameArea.innerHTML = '';
-
-            const count = parseInt(questionCountInput.value) || 8;
-
-            for (let i = 1; i <= count; i++) {
-                // Создаем слот
-                const slot = document.createElement('div');
-                slot.className = 'slot';
-                slotsContainer.appendChild(slot);
-
-                // Создаем табличку
-                const tablet = document.createElement('div');
-                tablet.className = 'tablet';
-                tablet.textContent = i;
-                
-                // Рандомная позиция
-                tablet.style.left = Math.floor(Math.random() * 80) + 10 + '%';
-                tablet.style.top = Math.floor(Math.random() * 70) + 10 + '%';
-                
-                gameArea.appendChild(tablet);
+    function loadConfig(payload) {
+        try {
+            let b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+            while (b64.length % 4) b64 += '=';
+            const str = decodeURIComponent(Array.prototype.map.call(atob(b64), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+            const c = JSON.parse(str);
+            for(const k in c) {
+                const el = document.getElementById(k);
+                if(el) {
+                    if(el.type === 'checkbox') el.checked = c[k];
+                    else el.value = c[k];
+                }
             }
+            renderGame();
+        } catch(e) { console.error(e); }
+    }
+
+    function generateIframe() { 
+        const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
+        let base = document.getElementById('github-url').value.trim();
+        if(!base.startsWith('http')) base = 'https://' + base;
+        // Убираем лишний слэш, если он есть в конце
+        if(base.endsWith('/')) base = base.slice(0, -1);
+        
+        let code = `<iframe src="${base}/#play=${b64}" style="width: 100%; height: 700px; border: none; border-radius: 10px; background: transparent;" allow="autoplay; fullscreen" allowtransparency="true" allowfullscreen></iframe>`; 
+        document.getElementById('export-output').value = code;
+    }
+
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+        return `rgba(${r},${g},${b},${alpha/100})`;
+    }
+
+    function liveUpdate() {
+        const r = document.documentElement.style;
+        r.setProperty('--task-font', document.getElementById('task-font').value);
+        r.setProperty('--task-color', document.getElementById('task-color').value);
+        r.setProperty('--task-sz', document.getElementById('task-sz').value + 'px');
+        document.getElementById('task-title').innerText = document.getElementById('task-text').value;
+
+        r.setProperty('--scr-font', document.getElementById('scr-font').value);
+        r.setProperty('--scr-color', document.getElementById('scr-color').value);
+        r.setProperty('--scr-title-sz', document.getElementById('scr-title-sz').value + 'px');
+        r.setProperty('--scr-btn-sz', document.getElementById('scr-btn-sz').value + 'px');
+        r.setProperty('--scr-bg', `rgba(0,0,0,${document.getElementById('scr-bg-alpha').value/100})`);
+        document.getElementById('disp-start-title').innerText = document.getElementById('start-title').value;
+        document.getElementById('disp-start-btn').innerText = document.getElementById('start-btn').value;
+        document.getElementById('disp-win-title').innerText = document.getElementById('win-title').value;
+        document.getElementById('disp-win-btn').innerText = document.getElementById('win-btn').value;
+
+        r.setProperty('--slot-bg', hexToRgba(document.getElementById('slot-bg-hex').value, document.getElementById('slot-bg-alpha').value));
+        r.setProperty('--slot-border', document.getElementById('slot-border').value);
+        r.setProperty('--slot-border-color', document.getElementById('slot-border-color').value);
+        r.setProperty('--slot-neon-act', document.getElementById('slot-neon-act').value);
+
+        r.setProperty('--sq-font', document.getElementById('sq-font').value);
+        r.setProperty('--sq-color', document.getElementById('sq-color').value);
+        r.setProperty('--sq-sz', document.getElementById('sq-sz').value + 'px');
+        r.setProperty('--sq-rad', document.getElementById('sq-rad').value + 'px');
+        r.setProperty('--sq-neon-color', document.getElementById('sq-neon-color').value);
+        r.setProperty('--sq-neon-sz', document.getElementById('sq-neon-sz').value + 'px');
+        r.setProperty('--sq-speed', document.getElementById('sq-speed').value);
+
+        r.setProperty('--mod-border', document.getElementById('mod-border').value);
+        r.setProperty('--mod-neon-sz', document.getElementById('mod-neon-sz').value + 'px');
+        r.setProperty('--mod-q-color', document.getElementById('mod-q-color').value);
+        r.setProperty('--mod-q-sz', document.getElementById('mod-q-sz').value + 'px');
+        r.setProperty('--mod-btn-bg', document.getElementById('mod-btn-bg').value);
+        r.setProperty('--mod-btn-color', document.getElementById('mod-btn-color').value);
+
+        r.setProperty('--bg-color', hexToRgba(document.getElementById('bg-color-hex').value, document.getElementById('bg-alpha').value));
+        let bgImg = document.getElementById('bg-img').value;
+        r.setProperty('--bg-img', bgImg ? `url('${bgImg}')` : 'none');
+
+        const mode = document.getElementById('sq-color-mode').value;
+        const sColor = document.getElementById('sq-single-color').value;
+        squares.forEach((sq, i) => {
+            sq.style.backgroundColor = (mode === 'single') ? sColor : defaultColors[i % defaultColors.length];
+        });
+        updateSquaresVisuals();
+        
+        // Обновляем iframe при каждом изменении, если вкладка открыта
+        if(document.getElementById('tab-export').classList.contains('active')) {
+            generateIframe();
+        }
+    }
+
+    function parseData() {
+        const lines = document.getElementById('data-input').value.split('\n').filter(l => l.trim() !== '');
+        gameData = [];
+        lines.forEach((line, id) => {
+            let parts = line.split('|').map(s => s.trim());
+            if(parts.length >= 6) {
+                let ansArr = [{t: parts[1], c: true}, {t: parts[2], c: false}, {t: parts[3], c: false}].sort(() => Math.random() - 0.5);
+                gameData.push({ id: id, q: parts[0], a: ansArr, targetSlot: parseInt(parts[4]) - 1, symbol: parts[5] });
+            }
+        });
+        // Синхронизируем счетчик с реальным количеством строк
+        if(document.getElementById('q-counter')) {
+            document.getElementById('q-counter').value = gameData.length;
+        }
+    }
+
+    function renderGame() {
+        parseData();
+        slotsFilled = 0;
+        isModalOpen = false;
+        activeSquare = null;
+        squares = [];
+        document.getElementById('top-bar').innerHTML = '';
+        document.querySelectorAll('.square').forEach(e => e.remove());
+        
+        document.getElementById('win-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('hidden');
+
+        // Создаем слоты
+        for(let i=0; i<gameData.length; i++) {
+            let s = document.createElement('div');
+            s.className = 'slot';
+            s.id = 'slot-' + i;
+            document.getElementById('top-bar').appendChild(s);
         }
 
-        updateBtn.addEventListener('click', updateGame);
+        // Создаем таблички
+        const mode = document.getElementById('sq-color-mode') ? document.getElementById('sq-color-mode').value : 'multi';
+        const sColor = document.getElementById('sq-single-color') ? document.getElementById('sq-single-color').value : '#00ffff';
         
-        // Запускаем один раз при загрузке, чтобы отрисовать начальные 8 штук
-        updateGame();
-    </script>
+        gameData.forEach((d, i) => {
+            let sq = document.createElement('div');
+            sq.className = 'square';
+            sq.style.backgroundColor = (mode === 'single') ? sColor : defaultColors[i % defaultColors.length];
+            sq.dataset.id = i;
+            
+            let content = document.createElement('div');
+            content.className = 'sq-content';
+            if(d.symbol.startsWith('http')) {
+                content.innerHTML = `<img src="${d.symbol}" class="sq-img" style="border-radius: var(--sq-rad);">`;
+            } else {
+                content.innerText = d.symbol;
+            }
+            sq.appendChild(content);
+
+            sq.x = Math.random() * (window.innerWidth - (document.getElementById('sidebar').offsetWidth||0) - 60);
+            sq.y = 150 + Math.random() * (window.innerHeight - 250);
+            sq.vx = (Math.random() - 0.5);
+            sq.vy = (Math.random() - 0.5);
+            sq.isFloating = false;
+            
+            sq.style.left = sq.x + 'px';
+            sq.style.top = sq.y + 'px';
+
+            sq.onclick = () => { initAudio(); playSfx('tap'); openQuestion(sq); };
+            document.getElementById('game-area').appendChild(sq);
+            squares.push(sq);
+        });
+        liveUpdate();
+    }
+
+    function updateSquaresVisuals() {
+        let hide = document.getElementById('hide-content').checked;
+        squares.forEach(sq => {
+            let content = sq.querySelector('.sq-content');
+            if(content) content.style.opacity = (hide && sq.isFloating) ? 0 : 1;
+        });
+    }
+
+    function startGame() {
+        initAudio();
+        document.getElementById('start-screen').classList.add('hidden');
+        squares.forEach(sq => {
+            sq.isFloating = true;
+            sq.vx = (Math.random() - 0.5) * 2;
+            sq.vy = (Math.random() - 0.5) * 2;
+        });
+        updateSquaresVisuals();
+    }
+
+    function animate() {
+        let speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sq-speed')) || 3.5;
+        let sW = document.body.classList.contains('play-mode') ? 0 : 500;
+        
+        squares.forEach(sq => {
+            if (!sq.isFloating) return;
+            sq.x += sq.vx * speed;
+            sq.y += sq.vy * speed;
+
+            if (sq.x <= sW) { sq.x = sW; sq.vx *= -1; }
+            if (sq.x >= window.innerWidth - 60) { sq.x = window.innerWidth - 60; sq.vx *= -1; }
+            if (sq.y <= 150) { sq.y = 150; sq.vy *= -1; }
+            if (sq.y >= window.innerHeight - 60) { sq.y = window.innerHeight - 60; sq.vy *= -1; }
+
+            sq.style.left = sq.x + 'px';
+            sq.style.top = sq.y + 'px';
+        });
+        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    function openQuestion(sq) {
+        if (isModalOpen || !sq.isFloating) return;
+        isModalOpen = true;
+        activeSquare = sq;
+        sq.isFloating = false;
+        updateSquaresVisuals();
+
+        let d = gameData[sq.dataset.id];
+        document.getElementById('q-text').innerText = d.q;
+        let opt = document.getElementById('options');
+        opt.innerHTML = '';
+
+        d.a.forEach(ans => {
+            let btn = document.createElement('button');
+            btn.className = 'ans-btn';
+            btn.innerText = ans.t;
+            btn.onclick = () => checkAnswer(ans.c, d.targetSlot);
+            opt.appendChild(btn);
+        });
+
+        document.getElementById('modal-overlay').style.display = 'flex';
+
+        // TTS - Озвучка вопроса с эффектами голоса
+        let lang = document.getElementById('game-lang').value;
+        if(lang !== 'none' && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            let u = new SpeechSynthesisUtterance(d.q);
+            u.lang = lang;
+            let vStyle = document.getElementById('voice-style').value;
+            if (vStyle === 'child') { u.pitch = 1.8; u.rate = 1.1; }
+            else if (vStyle === 'low') { u.pitch = 0.4; u.rate = 0.9; }
+            else if (vStyle === 'robot') { u.pitch = 0.1; u.rate = 0.8; }
+            else { u.pitch = 1; u.rate = 1; }
+            window.speechSynthesis.speak(u);
+        }
+    }
+
+    function checkAnswer(isCorrect, tSlot) {
+        window.speechSynthesis.cancel();
+        if (isCorrect) {
+            playSfx('correct');
+            document.getElementById('modal-overlay').style.display = 'none';
+            isModalOpen = false;
+
+            let target = document.getElementById('slot-' + tSlot);
+            let r = target.getBoundingClientRect();
+            
+            activeSquare.classList.add('flying');
+            activeSquare.style.left = r.left + 'px';
+            activeSquare.style.top = r.top + 'px';
+            
+            setTimeout(() => {
+                playSfx('clack');
+                target.classList.add('active-glow');
+                activeSquare.style.boxShadow = 'none';
+                slotsFilled++;
+                if (slotsFilled >= gameData.length) {
+                    setTimeout(() => {
+                        playSfx('victory');
+                        document.getElementById('win-screen').classList.remove('hidden');
+                    }, 500);
+                }
+            }, 800);
+        } else {
+            playSfx('wrong');
+            let m = document.getElementById('modal');
+            m.style.animation = 'none';
+            m.style.transform = 'translateX(-10px)';
+            setTimeout(()=> m.style.transform = 'translateX(10px)', 50);
+            setTimeout(()=> m.style.transform = 'translateX(-10px)', 100);
+            setTimeout(()=> m.style.transform = 'translateX(10px)', 150);
+            setTimeout(()=> m.style.transform = 'translateX(0)', 200);
+            setTimeout(() => {
+                document.getElementById('modal-overlay').style.display = 'none';
+                isModalOpen = false;
+                activeSquare.isFloating = true;
+                updateSquaresVisuals();
+            }, 500);
+        }
+    }
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playSfx(t) {
+        if (!audioCtx) return;
+        const n = audioCtx.currentTime;
+        if(t==='tap'){
+            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(600,n);o.frequency.exponentialRampToValueAtTime(800,n+0.1);g.gain.setValueAtTime(0.3,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.1);
+        }
+        else if(t==='correct'){
+            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.setValueAtTime(400,n);o.frequency.exponentialRampToValueAtTime(800,n+0.2);o.frequency.exponentialRampToValueAtTime(1200,n+0.4);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.5,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.4);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.4);
+        }
+        else if(t==='wrong'){
+            const s=audioCtx.createBufferSource(),b=audioCtx.createBuffer(1,audioCtx.sampleRate*0.8,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;s.buffer=b;const f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(1000,n);f.frequency.exponentialRampToValueAtTime(100,n+0.8);const g=audioCtx.createGain();g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.6,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.8);s.connect(f);f.connect(g);g.connect(audioCtx.destination);s.start(n);
+        }
+        else if(t==='clack'){
+            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='square';o.frequency.setValueAtTime(100,n);o.frequency.exponentialRampToValueAtTime(20,n+0.1);g.gain.setValueAtTime(0.6,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.1);
+        }
+        else if(t==='victory'){
+            const d=audioCtx.createOscillator(),dg=audioCtx.createGain(),f=audioCtx.createBiquadFilter();d.type='sawtooth';d.frequency.setValueAtTime(65.41,n);d.frequency.exponentialRampToValueAtTime(130.81,n+3);f.type='lowpass';f.frequency.setValueAtTime(100,n);f.frequency.exponentialRampToValueAtTime(2000,n+2.5);dg.gain.setValueAtTime(0,n);dg.gain.linearRampToValueAtTime(0.2,n+1);dg.gain.exponentialRampToValueAtTime(0.01,n+3);d.connect(f);f.connect(dg);dg.connect(audioCtx.destination);d.start(n);d.stop(n+3);
+            setTimeout(()=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(523.25,n);o.frequency.exponentialRampToValueAtTime(1046.5,n+1);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.3,n+0.5);g.gain.exponentialRampToValueAtTime(0.01,n+1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+1);},1500);
+        }
+    }
+</script>
 </body>
 </html>
