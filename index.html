@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Hover Quiz: Editor</title>
+    <title>Hover Quiz: Editor from English Bootcamp</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cormorant+SC:wght@700&family=Exo+2:wght@300;700&family=Bebas+Neue&family=Kelly+Slab&family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&family=Comfortaa:wght@400;700&family=Special+Elite&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -37,22 +37,24 @@
         body.play-mode #sidebar { display: none !important; }
 
         /* --- РЕДАКТОР --- */
-        #sidebar { width: 450px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px rgba(0,0,0,0.9); }
-        #sidebar-header { padding: 25px; display: flex; flex-direction: column; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; text-align: center; }
-        #sidebar-header img { width: 80px; height: 80px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
-        #sidebar-title { font-family: 'Orbitron'; font-size: 1.5rem; color: #00e5ff; font-weight: bold; }
+        #sidebar { width: 500px; height: 100vh; background: #000; border-right: 2px solid var(--n-dark); display: flex; flex-direction: column; z-index: 5000; position: relative; box-shadow: 5px 0 20px #000; }
+        #sidebar-header { padding: 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #111; background: #030503; }
+        #sidebar-header img { width: 40px; height: 40px; filter: drop-shadow(0 0 10px #00e5ff); object-fit: contain; }
+        #sidebar-title { font-family: 'Orbitron'; font-size: 18px; color: #00e5ff; font-weight: bold; }
 
         .tabs { display: flex; background: #111; border-bottom: 1px solid #222; flex-wrap: wrap; }
         .tab-btn { flex: 1 1 20%; padding: 12px 2px; background: none; border: none; color: #777; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; }
         .tab-btn.active { color: var(--n-green); background: #0a110a; border-bottom: 3px solid var(--n-green); }
-        .tab-content { flex-grow: 1; padding: 15px; overflow-y: auto; display: none; margin-bottom: 20px; scrollbar-width: none;}
-        .tab-content::-webkit-scrollbar { display: none; }
+        .tab-content { flex-grow: 1; padding: 15px; overflow-y: auto; display: none; margin-bottom: 50px; }
         .tab-content.active { display: block; }
 
         .group { margin-bottom: 20px; background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #1a1a1a; }
         .group h3 { margin: 0 0 12px 0; font-size: 14px; color: #555; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
         .group label { display: block; font-size: 13px; color: var(--n-green); margin-bottom: 6px; font-weight: bold; }
-        .instruction-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 12px; margin-bottom: 15px; font-size: 13px; line-height: 1.5; color: #ddd; }
+        .group p.hint { font-size: 12px; color: #ffcc00; margin: 0 0 8px 0; line-height: 1.3; }
+        
+        .instruction-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 12px; margin-bottom: 15px; font-size: 13px; line-height: 1.5; color: #ddd; border-radius: 0 4px 4px 0; }
+        .instruction-box b { color: #ffcc00; }
 
         input, select, textarea { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 10px; margin-bottom: 12px; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
         textarea { font-family: monospace; white-space: pre; line-height: 1.4; }
@@ -97,13 +99,13 @@
 <div id="sidebar">
     <div id="sidebar-header">
         <img src="https://img.genially.com/67961b32a116fb001568a75e/673752a5-8d4d-40d1-9b5f-f04ebd91a27c.png" alt="Logo">
-        <div id="sidebar-title">Hover Quiz: Editor by English Bootcamp</div>
+        <div id="sidebar-title">Hover Quiz: Editor</div>
     </div>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab(this, 'tab-data')">1. ДАННЫЕ</button>
         <button class="tab-btn" onclick="openTab(this, 'tab-screens')">2. ЭКРАНЫ</button>
-        <button class="tab-btn" onclick="openTab(this, 'tab-elements')">3. ЭЛЕМЕНТЫ</button>
+        <button class="tab-btn" onclick="openTab(this, 'tab-elements')">3. ПОЛЕ И ЭЛЕМЕНТЫ</button>
         <button class="tab-btn" onclick="openTab(this, 'tab-bg')">4. ФОН</button>
         <button class="tab-btn" style="color:var(--n-green);" onclick="openTab(this, 'tab-export')">ЭКСПОРТ</button>
     </div>
@@ -145,8 +147,14 @@
         <div class="group">
             <h3>База Вопросов и Контент Табличек</h3>
             <div class="instruction-box">
-                Пишите элементы строго через вертикальную черту <b>|</b><br>
-                Вопрос | Верный ответ | Ложный 1 | Ложный 2 | Номер слота | Символ на табличке
+                <b>ИНСТРУКЦИЯ ПО ЗАПОЛНЕНИЮ:</b><br>
+                Пишите элементы строго через вертикальную черту <b>|</b> в таком порядке:<br><br>
+                1. <b>Вопрос</b><br>
+                2. <b>Верный ответ</b><br>
+                3. <b>Ложный ответ 1</b><br>
+                4. <b>Ложный ответ 2</b><br>
+                5. <b>Номер слота (цифра)</b> — куда прилетит табличка<br>
+                6. <b>Символ на табличке</b> — текст, цифра или <b>ссылка на картинку/гифку</b> (начиная с http).
             </div>
             <textarea id="data-input" style="height: 180px;">The number of the Sun is TEN plus THREE | Thirteen | Twelve | Fifteen | 8 | 1
 What is TWO multiplied by FOUR? | Eight | Six | Ten | 7 | 2
@@ -189,6 +197,7 @@ Check the diary and enter the code.</textarea>
     <div id="tab-elements" class="tab-content config-group">
         <div class="group">
             <h3>Парящие Таблички</h3>
+            
             <label>Цветовой режим:</label>
             <div class="row">
                 <select id="sq-color-mode" onchange="liveUpdate()">
@@ -197,15 +206,17 @@ Check the diary and enter the code.</textarea>
                 </select>
                 <input type="color" id="sq-single-color" class="color-pick" value="#00ffff" onchange="liveUpdate()">
             </div>
-            <label>Шрифт и Цвет текста:</label>
+
+            <label>Шрифт и Цвет текста (если на табличке текст):</label>
             <div class="row">
                 <select id="sq-font" onchange="liveUpdate()">
                     <option value="'Orbitron'">Orbitron</option><option value="'Exo 2'">Exo 2</option><option value="'Comic Sans MS', cursive">Comic Sans</option><option value="'Cinzel Decorative'">Cinzel</option>
                 </select>
                 <input type="color" id="sq-color" class="color-pick" value="#ffffff" onchange="liveUpdate()">
-                <input type="number" id="sq-sz" value="24" placeholder="Текст px" oninput="liveUpdate()">
+                <input type="number" id="sq-sz" value="24" placeholder="Размер px" oninput="liveUpdate()">
             </div>
-            <label>Скругление углов (0 - квадрат, 50 - круг):</label> <input type="number" id="sq-rad" value="8" oninput="liveUpdate()">
+            <label>Скругление углов (0 - квадрат, 50 - круг):</label>
+            <input type="number" id="sq-rad" value="8" oninput="liveUpdate()">
             <label>Цвет и размер неонового свечения (в полете):</label>
             <div class="row">
                 <input type="color" id="sq-neon-color" class="color-pick" value="#00ffff" onchange="liveUpdate()">
@@ -215,6 +226,7 @@ Check the diary and enter the code.</textarea>
             <label style="margin-top:10px;">Скорость полета (1 - медленно, 10 - быстро):</label>
             <input type="range" id="sq-speed" min="1" max="10" step="0.5" value="3.5" oninput="liveUpdate()">
         </div>
+
         <div class="group">
             <h3>Слоты-приемники (Верхняя панель)</h3>
             <label>Цвет фона и Прозрачность (0-100):</label>
@@ -231,10 +243,14 @@ Check the diary and enter the code.</textarea>
             <label>Неон при успешном попадании таблички в слот:</label>
             <input type="color" id="slot-neon-act" class="color-pick" value="#39FF14" onchange="liveUpdate()">
         </div>
+
         <div class="group">
             <h3>Окно Вопроса</h3>
             <label>Цвет рамки и Размер неона:</label>
-            <div class="row"><input type="color" id="mod-border" class="color-pick" value="#39FF14" onchange="liveUpdate()"><input type="number" id="mod-neon-sz" value="30" placeholder="Неон px" oninput="liveUpdate()"></div>
+            <div class="row">
+                <input type="color" id="mod-border" class="color-pick" value="#39FF14" onchange="liveUpdate()">
+                <input type="number" id="mod-neon-sz" value="30" placeholder="Неон px" oninput="liveUpdate()">
+            </div>
             <label>Цвет и размер текста вопроса:</label>
             <div class="row"><input type="color" id="mod-q-color" class="color-pick" value="#ffffff" onchange="liveUpdate()"><input type="number" id="mod-q-sz" value="20" oninput="liveUpdate()"></div>
             <label>Кнопки ответов (Фон и Текст):</label>
@@ -245,7 +261,7 @@ Check the diary and enter the code.</textarea>
     <div id="tab-bg" class="tab-content config-group">
         <div class="group">
             <h3>Фон Игры</h3>
-            <label>Цвет фона и Прозрачность (поставьте 0 для Genially):</label>
+            <label>Цвет фона и Прозрачность (поставьте прозрачность 0 для Genially):</label>
             <div class="row"><input type="color" id="bg-color-hex" class="color-pick" value="#050805" onchange="liveUpdate()"><input type="number" id="bg-alpha" value="100" oninput="liveUpdate()"></div>
             <label>Фоновая Картинка (URL):</label>
             <input type="text" id="bg-img" placeholder="Ссылка на фон" oninput="liveUpdate()">
@@ -253,49 +269,44 @@ Check the diary and enter the code.</textarea>
     </div>
 
     <div id="tab-export" class="tab-content">
-        <div class="group">
-            <h3>СГЕНЕРИРОВАТЬ ССЫЛКИ ДЛЯ ВСТРАИВАНИЯ</h3>
-            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Для генерации используется твой репозиторий: oksanabashlykova10-eng.github.io/hover-quiz/</p>
-            
-            <label>1. Готовая ссылка HTML (для прямой вставки):</label>
-            <textarea id="html-direct-output" readonly style="height: 60px; font-size: 12px; color: #00e5ff; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Ссылка HTML скопирована!');"></textarea>
-            
-            <label style="margin-top: 15px;">2. Готовый код iframe (для Genially):</label>
-            <textarea id="iframe-export-output" readonly style="height: 120px; font-size: 12px; color: #39FF14; background: #111; cursor: pointer;" onclick="this.select(); document.execCommand('copy'); alert('Код iframe скопирована!');"></textarea>
-            
-            <button style="width:100%; padding:15px; background: #39FF14; border:none; color:black; font-family:'Orbitron', sans-serif; font-weight:bold; font-size:16px; cursor:pointer; margin-top:15px;" onclick="generateIframe()">СГЕНЕРИРОВАТЬ ССЫЛКИ</button>
+        <h2>Генератор Кода Genially</h2>
+        <div class="group" style="display: none;">
+            <label>Ссылка на GitHub Pages:</label>
+            <input type="text" id="github-url" value="https://oksanabashlykova10-eng.github.io/catch/">
         </div>
+        <button style="width:100%; padding:15px; background:var(--n-green); border:none; color:black; font-family:'Orbitron'; font-weight:bold; cursor:pointer; margin-bottom: 15px; border-radius: 4px;" onclick="generateIframe()">СКОПИРОВАТЬ IFRAME ДЛЯ GENIALLY</button>
+        <button style="width:100%; padding:15px; background:transparent; border:2px solid #00e5ff; color:#00e5ff; font-family:'Orbitron'; font-weight:bold; cursor:pointer; margin-bottom: 15px; border-radius: 4px;" onclick="generateStandalone()">СКОПИРОВАТЬ АВТОНОМНЫЙ HTML</button>
+        <textarea id="export-output" style="height: 100px; font-size: 11px; background: #111; color: #fff;"></textarea>
     </div>
 
-    <div id="sidebar-footer">© English Bootcamp Games. All rights reserved.</div>
+    <div id="sidebar-footer">&copy; 2026 Все права принадлежат Башлыковой Оксане Михайловне</div>
 </div>
 
 <div id="game-area">
-    <div id="task-title"></div>
+    <div id="task-title">DECRYPT THE QUANTUM SEQUENCE</div>
     <div id="top-bar"></div>
+    
+    <div id="modal-overlay">
+        <div id="modal">
+            <div id="q-text">Question?</div>
+            <div id="options"></div>
+        </div>
+    </div>
 
     <div id="start-screen" class="overlay-screen">
-        <div class="scr-title" id="disp-start-title"></div>
-        <button class="scr-btn" id="disp-start-btn" onclick="startGame()">START</button>
+        <div class="scr-title" id="start-t-disp">QUANTUM CHRONOMETER</div>
+        <button class="scr-btn" id="start-btn-disp" onclick="startGame()">START SYSTEM</button>
     </div>
 
     <div id="win-screen" class="overlay-screen hidden">
-        <div class="scr-title" id="disp-win-title" style="white-space:pre-wrap;"></div>
-        <button class="scr-btn" id="disp-win-btn" onclick="renderGame()">REBOOT</button>
-    </div>
-
-    <div id="modal-overlay">
-        <div id="modal">
-            <div id="q-text"></div>
-            <div id="options"></div>
-        </div>
+        <div class="scr-title" id="win-t-disp" style="white-space: pre-wrap;">SYSTEM CALIBRATED!</div>
+        <button class="scr-btn" id="win-btn-disp" onclick="resetGame()">REBOOT</button>
     </div>
 </div>
 
 <script>
     let gameData = [], squares = [], slotsFilled = 0, isModalOpen = false, activeSquare = null, audioCtx = null;
     const defaultColors = ['#FF3366', '#33CCFF', '#FFCC00', '#CC33FF', '#39FF14', '#FF6600', '#00FFFF', '#FF00FF'];
-    const githubPagesBaseUrl = "https://oksanabashlykova10-eng.github.io/hover-quiz/";
 
     window.onload = () => {
         const hash = window.forcedPayload ? '#play=' + window.forcedPayload : window.location.hash;
@@ -314,18 +325,14 @@ Check the diary and enter the code.</textarea>
         btn.classList.add('active');
     }
 
-    // Сохранение настроек
     function saveConfig() {
         const c = {};
         document.querySelectorAll('.config-group input, .config-group select, .config-group textarea').forEach(el => {
-            if(el.id && el.id !== 'iframe-export-output' && el.id !== 'html-direct-output') {
-                c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-            }
+            if(el.id) c[el.id] = el.type === 'checkbox' ? el.checked : el.value;
         });
         return c;
     }
 
-    // Загрузка настроек
     function loadConfig(payload) {
         try {
             let b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -334,82 +341,85 @@ Check the diary and enter the code.</textarea>
             const c = JSON.parse(str);
             for(const k in c) {
                 const el = document.getElementById(k);
-                if(el) {
-                    if(el.type === 'checkbox') el.checked = c[k];
-                    else el.value = c[k];
-                }
+                if(el) { if(el.type === 'checkbox') el.checked = c[k]; else el.value = c[k]; }
             }
             renderGame();
         } catch(e) { console.error(e); }
     }
 
-    // Генерация ссылки для Genially и HTML
-    function generateIframe() { 
-        const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
-        
-        let gameHtmlLink = githubPagesBaseUrl + "#play=" + b64;
-        let iframeCode = `<iframe src="${gameHtmlLink}" style="width: 100%; height: 700px; border: none; border-radius: 10px; background: transparent;" allow="autoplay; fullscreen" allowtransparency="true" allowfullscreen></iframe>`; 
-        
-        document.getElementById('html-direct-output').value = gameHtmlLink;
-        document.getElementById('iframe-export-output').value = iframeCode;
+    function generateIframe() {
+        const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        let base = document.getElementById('github-url').value.trim();
+        let code = `<iframe src="${base}#play=${b64}" style="width: 100%; height: 100%; border: none; background: transparent;" allow="autoplay" allowtransparency="true"></iframe>`;
+        document.getElementById('export-output').value = code;
     }
 
-    function hexToRgba(hex, alpha) {
-        const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+    function generateStandalone() {
+        const b64 = btoa(encodeURIComponent(JSON.stringify(saveConfig())).replace(/%([0-9A-F]{2})/g, (m,p1) => String.fromCharCode('0x'+p1))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        html = html.replace('<head>', '<head>\n    <script>window.forcedPayload = "'+b64+'";<\/script>');
+        document.getElementById('export-output').value = html;
+    }
+
+    function hexToRgbA(hex, alpha) {
+        let r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
         return `rgba(${r},${g},${b},${alpha/100})`;
     }
 
     function liveUpdate() {
-        const r = document.documentElement.style;
-        r.setProperty('--task-font', document.getElementById('task-font').value);
-        r.setProperty('--task-color', document.getElementById('task-color').value);
-        r.setProperty('--task-sz', document.getElementById('task-sz').value + 'px');
+        const r = document.documentElement;
+        r.style.setProperty('--bg-color', hexToRgbA(document.getElementById('bg-color-hex').value, document.getElementById('bg-alpha').value));
+        const bgImg = document.getElementById('bg-img').value;
+        r.style.setProperty('--bg-img', bgImg ? `url('${bgImg}')` : 'none');
+
+        r.style.setProperty('--scr-font', document.getElementById('scr-font').value);
+        r.style.setProperty('--scr-color', document.getElementById('scr-color').value);
+        r.style.setProperty('--scr-title-sz', document.getElementById('scr-title-sz').value + 'px');
+        r.style.setProperty('--scr-btn-sz', document.getElementById('scr-btn-sz').value + 'px');
+        r.style.setProperty('--scr-bg', `rgba(0,0,0,${document.getElementById('scr-bg-alpha').value/100})`);
+
+        r.style.setProperty('--task-font', document.getElementById('task-font').value);
+        r.style.setProperty('--task-color', document.getElementById('task-color').value);
+        r.style.setProperty('--task-sz', document.getElementById('task-sz').value + 'px');
+
+        r.style.setProperty('--slot-bg', hexToRgbA(document.getElementById('slot-bg-hex').value, document.getElementById('slot-bg-alpha').value));
+        r.style.setProperty('--slot-border', document.getElementById('slot-border').value);
+        r.style.setProperty('--slot-border-color', document.getElementById('slot-border-color').value);
+        r.style.setProperty('--slot-neon-act', document.getElementById('slot-neon-act').value);
+
+        r.style.setProperty('--sq-font', document.getElementById('sq-font').value);
+        r.style.setProperty('--sq-color', document.getElementById('sq-color').value);
+        r.style.setProperty('--sq-sz', document.getElementById('sq-sz').value + 'px');
+        r.style.setProperty('--sq-rad', document.getElementById('sq-rad').value + '%');
+        
+        r.style.setProperty('--sq-neon-color', document.getElementById('sq-neon-color').value);
+        r.style.setProperty('--sq-neon-sz', document.getElementById('sq-neon-sz').value + 'px');
+
+        r.style.setProperty('--mod-border', document.getElementById('mod-border').value);
+        r.style.setProperty('--mod-neon-sz', document.getElementById('mod-neon-sz').value + 'px');
+        r.style.setProperty('--mod-q-color', document.getElementById('mod-q-color').value);
+        r.style.setProperty('--mod-q-sz', document.getElementById('mod-q-sz').value + 'px');
+        r.style.setProperty('--mod-btn-bg', hexToRgbA(document.getElementById('mod-btn-bg').value, 80));
+        r.style.setProperty('--mod-btn-color', document.getElementById('mod-btn-color').value);
+
         document.getElementById('task-title').innerText = document.getElementById('task-text').value;
-
-        r.setProperty('--scr-font', document.getElementById('scr-font').value);
-        r.setProperty('--scr-color', document.getElementById('scr-color').value);
-        r.setProperty('--scr-title-sz', document.getElementById('scr-title-sz').value + 'px');
-        r.setProperty('--scr-btn-sz', document.getElementById('scr-btn-sz').value + 'px');
-        r.setProperty('--scr-bg', `rgba(0,0,0,${document.getElementById('scr-bg-alpha').value/100})`);
-        document.getElementById('disp-start-title').innerText = document.getElementById('start-title').value;
-        document.getElementById('disp-start-btn').innerText = document.getElementById('start-btn').value;
-        document.getElementById('disp-win-title').innerText = document.getElementById('win-title').value;
-        document.getElementById('disp-win-btn').innerText = document.getElementById('win-btn').value;
-
-        r.setProperty('--slot-bg', hexToRgba(document.getElementById('slot-bg-hex').value, document.getElementById('slot-bg-alpha').value));
-        r.setProperty('--slot-border', document.getElementById('slot-border').value);
-        r.setProperty('--slot-border-color', document.getElementById('slot-border-color').value);
-        r.setProperty('--slot-neon-act', document.getElementById('slot-neon-act').value);
-
-        r.setProperty('--sq-font', document.getElementById('sq-font').value);
-        r.setProperty('--sq-color', document.getElementById('sq-color').value);
-        r.setProperty('--sq-sz', document.getElementById('sq-sz').value + 'px');
-        r.setProperty('--sq-rad', document.getElementById('sq-rad').value + 'px');
-        r.setProperty('--sq-neon-color', document.getElementById('sq-neon-color').value);
-        r.setProperty('--sq-neon-sz', document.getElementById('sq-neon-sz').value + 'px');
-        r.setProperty('--sq-speed', document.getElementById('sq-speed').value);
-
-        r.setProperty('--mod-border', document.getElementById('mod-border').value);
-        r.setProperty('--mod-neon-sz', document.getElementById('mod-neon-sz').value + 'px');
-        r.setProperty('--mod-q-color', document.getElementById('mod-q-color').value);
-        r.setProperty('--mod-q-sz', document.getElementById('mod-q-sz').value + 'px');
-        r.setProperty('--mod-btn-bg', document.getElementById('mod-btn-bg').value);
-        r.setProperty('--mod-btn-color', document.getElementById('mod-btn-color').value);
-
-        r.setProperty('--bg-color', hexToRgba(document.getElementById('bg-color-hex').value, document.getElementById('bg-alpha').value));
-        let bgImg = document.getElementById('bg-img').value;
-        r.setProperty('--bg-img', bgImg ? `url('${bgImg}')` : 'none');
-
+        document.getElementById('start-t-disp').innerText = document.getElementById('start-title').value;
+        document.getElementById('start-btn-disp').innerText = document.getElementById('start-btn').value;
+        document.getElementById('win-t-disp').innerText = document.getElementById('win-title').value;
+        document.getElementById('win-btn-disp').innerText = document.getElementById('win-btn').value;
+        
+        // Обновление цвета табличек на лету
         const mode = document.getElementById('sq-color-mode').value;
         const sColor = document.getElementById('sq-single-color').value;
         squares.forEach((sq, i) => {
             sq.style.backgroundColor = (mode === 'single') ? sColor : defaultColors[i % defaultColors.length];
         });
+
         updateSquaresVisuals();
     }
 
     function parseData() {
-        const lines = document.getElementById('data-input').value.split('\n').filter(l => l.trim() !== '');
+        const lines = document.getElementById('data-input').value.split('\n');
         gameData = [];
         lines.forEach((line, id) => {
             let parts = line.split('|').map(s => s.trim());
@@ -421,35 +431,29 @@ Check the diary and enter the code.</textarea>
     }
 
     function renderGame() {
-        parseData();
-        slotsFilled = 0;
-        isModalOpen = false;
-        activeSquare = null;
-        squares = [];
+        parseData(); 
+        slotsFilled = 0; isModalOpen = false; activeSquare = null; squares = [];
         document.getElementById('top-bar').innerHTML = '';
         document.querySelectorAll('.square').forEach(e => e.remove());
-        
         document.getElementById('win-screen').classList.add('hidden');
         document.getElementById('start-screen').classList.remove('hidden');
-
+        
+        // Создаем слоты
         for(let i=0; i<gameData.length; i++) {
-            let s = document.createElement('div');
-            s.className = 'slot';
-            s.id = 'slot-' + i;
+            let s = document.createElement('div'); s.className = 'slot'; s.id = 'slot-' + i;
             document.getElementById('top-bar').appendChild(s);
         }
 
+        // Создаем таблички
         const mode = document.getElementById('sq-color-mode') ? document.getElementById('sq-color-mode').value : 'multi';
         const sColor = document.getElementById('sq-single-color') ? document.getElementById('sq-single-color').value : '#00ffff';
-        
+
         gameData.forEach((d, i) => {
-            let sq = document.createElement('div');
-            sq.className = 'square';
+            let sq = document.createElement('div'); sq.className = 'square';
             sq.style.backgroundColor = (mode === 'single') ? sColor : defaultColors[i % defaultColors.length];
             sq.dataset.id = i;
             
-            let content = document.createElement('div');
-            content.className = 'sq-content';
+            let content = document.createElement('div'); content.className = 'sq-content';
             if(d.symbol.startsWith('http')) {
                 content.innerHTML = `<img src="${d.symbol}" class="sq-img" style="border-radius: var(--sq-rad);">`;
             } else {
@@ -457,19 +461,18 @@ Check the diary and enter the code.</textarea>
             }
             sq.appendChild(content);
 
-            sq.x = Math.random() * (window.innerWidth - 510);
+            sq.x = Math.random() * (window.innerWidth - (document.getElementById('sidebar').offsetWidth||0) - 60);
             sq.y = 150 + Math.random() * (window.innerHeight - 250);
-            sq.vx = (Math.random() - 0.5);
-            sq.vy = (Math.random() - 0.5);
+            sq.vx = (Math.random() - 0.5); sq.vy = (Math.random() - 0.5);
             sq.isFloating = false;
-            
-            sq.style.left = sq.x + 'px';
-            sq.style.top = sq.y + 'px';
 
+            sq.style.left = sq.x + 'px'; sq.style.top = sq.y + 'px';
             sq.onclick = () => { initAudio(); playSfx('tap'); openQuestion(sq); };
+            
             document.getElementById('game-area').appendChild(sq);
             squares.push(sq);
         });
+        
         liveUpdate();
     }
 
@@ -477,37 +480,33 @@ Check the diary and enter the code.</textarea>
         let hide = document.getElementById('hide-content').checked;
         squares.forEach(sq => {
             let content = sq.querySelector('.sq-content');
-            if(content) content.style.opacity = (hide && sq.isFloating) ? 0 : 1;
+            if(content) content.style.opacity = (hide && sq.isFloating) ? '0' : '1';
         });
     }
 
     function startGame() {
-        initAudio();
+        initAudio(); playSfx('clack');
         document.getElementById('start-screen').classList.add('hidden');
-        squares.forEach(sq => {
-            sq.isFloating = true;
-            sq.vx = (Math.random() - 0.5) * 2;
-            sq.vy = (Math.random() - 0.5) * 2;
-        });
+        squares.forEach(sq => sq.isFloating = true);
         updateSquaresVisuals();
     }
+    
+    function resetGame() { renderGame(); startGame(); }
 
     function animate() {
-        let speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sq-speed')) || 3.5;
-        let sW = document.body.classList.contains('play-mode') ? 0 : 450;
+        let speedMult = parseFloat(document.getElementById('sq-speed').value);
+        let offsetX = document.body.classList.contains('play-mode') ? 0 : 500;
         
         squares.forEach(sq => {
             if (!sq.isFloating) return;
-            sq.x += sq.vx * speed;
-            sq.y += sq.vy * speed;
+            sq.x += sq.vx * speedMult; sq.y += sq.vy * speedMult;
 
-            if (sq.x <= sW) { sq.x = sW; sq.vx *= -1; }
-            if (sq.x >= window.innerWidth - 60) { sq.x = window.innerWidth - 60; sq.vx *= -1; }
+            if (sq.x <= 0) { sq.x = 0; sq.vx *= -1; }
+            if (sq.x >= window.innerWidth - offsetX - 60) { sq.x = window.innerWidth - offsetX - 60; sq.vx *= -1; }
             if (sq.y <= 150) { sq.y = 150; sq.vy *= -1; }
             if (sq.y >= window.innerHeight - 60) { sq.y = window.innerHeight - 60; sq.vy *= -1; }
 
-            sq.style.left = sq.x + 'px';
-            sq.style.top = sq.y + 'px';
+            sq.style.left = sq.x + 'px'; sq.style.top = sq.y + 'px';
         });
         requestAnimationFrame(animate);
     }
@@ -515,137 +514,84 @@ Check the diary and enter the code.</textarea>
 
     function openQuestion(sq) {
         if (isModalOpen || !sq.isFloating) return;
-        isModalOpen = true;
-        activeSquare = sq;
-        sq.isFloating = false;
-        updateSquaresVisuals();
+        isModalOpen = true; activeSquare = sq; sq.isFloating = false; 
+        updateSquaresVisuals(); 
 
         let d = gameData[sq.dataset.id];
         document.getElementById('q-text').innerText = d.q;
-        let opt = document.getElementById('options');
-        opt.innerHTML = '';
+        let opt = document.getElementById('options'); opt.innerHTML = '';
 
         d.a.forEach(ans => {
-            let btn = document.createElement('button');
-            btn.className = 'ans-btn';
-            btn.innerText = ans.t;
+            let btn = document.createElement('button'); btn.className = 'ans-btn'; btn.innerText = ans.t;
             btn.onclick = () => checkAnswer(ans.c, d.targetSlot);
             opt.appendChild(btn);
         });
-
         document.getElementById('modal-overlay').style.display = 'flex';
 
-        // TTS
+        // TTS - Озвучка вопроса с эффектами голоса
         let lang = document.getElementById('game-lang').value;
         if(lang !== 'none' && window.speechSynthesis) {
             window.speechSynthesis.cancel();
             let u = new SpeechSynthesisUtterance(d.q);
             u.lang = lang;
+            
             let vStyle = document.getElementById('voice-style').value;
             if (vStyle === 'child') { u.pitch = 1.8; u.rate = 1.1; }
             else if (vStyle === 'low') { u.pitch = 0.4; u.rate = 0.9; }
             else if (vStyle === 'robot') { u.pitch = 0.1; u.rate = 0.8; }
             else { u.pitch = 1; u.rate = 1; }
+
             window.speechSynthesis.speak(u);
         }
     }
 
-    function checkAnswer(isCorrect, tSlot) {
-        window.speechSynthesis.cancel();
+    function checkAnswer(isCorrect, targetSlotIdx) {
+        document.getElementById('modal-overlay').style.display = 'none';
+        window.speechSynthesis && window.speechSynthesis.cancel(); 
+        
         if (isCorrect) {
-            playSfx('correct');
-            document.getElementById('modal-overlay').style.display = 'none';
-            isModalOpen = false;
-
-            let target = document.getElementById('slot-' + tSlot);
-            let slotRect = target.getBoundingClientRect();
-            let gameRect = document.getElementById('game-area').getBoundingClientRect();
-            let sphereRect = activeSquare.getBoundingClientRect();
-
-            // 1. Получаем центры
-            let slotCenterX = slotRect.left + (slotRect.width / 2);
-            let slotCenterY = slotRect.top + (slotRect.height / 2);
-
-            // 2. Летим к центру слота, выравнивая центр сферы
-            // Новое положение сферы рассчитывается
-            // Позиция верхнего левого угла сферы при выравнивании центров
-            let newSphereLeft = slotCenterX - (sphereRect.width / 2) - gameRect.left;
-            let newSphereTop = slotCenterY - (sphereRect.height / 2) - gameRect.top;
-
-            activeSquare.classList.add('flying');
-            activeSquare.style.left = newSphereLeft + 'px';
-            activeSquare.style.top = newSphereTop + 'px';
+            playSfx('correct'); setTimeout(() => playSfx('fly'), 100);
             
+            let slot = document.getElementById('slot-' + targetSlotIdx);
+            if(!slot) slot = document.getElementById('slot-0'); 
+            let r = slot.getBoundingClientRect(), sR = document.getElementById('game-area').getBoundingClientRect();
+            
+            slot.classList.add('active-glow');
+            activeSquare.classList.add('flying');
+            activeSquare.style.left = (r.left - sR.left + 5) + 'px';
+            activeSquare.style.top = (r.top - sR.top + 5) + 'px';
+            activeSquare.style.boxShadow = `0 0 30px ${activeSquare.style.backgroundColor}, inset 0 0 10px #fff`;
+            activeSquare.style.border = '2px solid #fff';
+
             setTimeout(() => {
                 playSfx('clack');
-                target.classList.add('active-glow');
-                activeSquare.style.boxShadow = 'none';
-                slotsFilled++;
-                if (slotsFilled >= gameData.length) {
-                    setTimeout(() => {
-                        playSfx('victory');
-                        document.getElementById('win-screen').classList.remove('hidden');
-                    }, 500);
-                }
+                activeSquare.classList.remove('flying');
+                activeSquare.style.position = 'static'; activeSquare.style.margin = 'auto';
+                slot.appendChild(activeSquare);
+                
+                slotsFilled++; activeSquare = null; isModalOpen = false;
+                if (slotsFilled === gameData.length) setTimeout(() => { playSfx('victory'); document.getElementById('win-screen').classList.remove('hidden'); }, 500);
             }, 800);
         } else {
             playSfx('wrong');
-            let m = document.getElementById('modal');
-            m.style.animation = 'none';
-            m.style.transform = 'translateX(-10px)';
-            setTimeout(()=> m.style.transform = 'translateX(10px)', 50);
-            setTimeout(()=> m.style.transform = 'translateX(-10px)', 100);
-            setTimeout(()=> m.style.transform = 'translateX(10px)', 150);
-            setTimeout(()=> m.style.transform = 'translateX(0)', 200);
+            activeSquare.style.border = '3px solid red'; activeSquare.style.boxShadow = '0 0 20px red'; activeSquare.style.transform = 'scale(1.2)';
             setTimeout(() => {
-                document.getElementById('modal-overlay').style.display = 'none';
-                isModalOpen = false;
-                activeSquare.isFloating = true;
-                updateSquaresVisuals();
-            }, 500);
+                activeSquare.style.border = 'none'; activeSquare.style.boxShadow = `0 0 var(--sq-neon-sz) var(--sq-neon-color)`; activeSquare.style.transform = '';
+                activeSquare.isFloating = true; activeSquare = null; isModalOpen = false; updateSquaresVisuals();
+            }, 600);
         }
     }
 
-    // --- ОРИГИНАЛЬНАЯ СИСТЕМА ЗВУКА ИЗ ТВОЕГО ФАЙЛА (без изменений) ---
-    function initAudio() {
-        if (!audioCtx) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-        }
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
-
+    // AUDIO
+    function initAudio() { if(!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); } }
     function playSfx(t) {
-        if (!audioCtx) return;
-        const n = audioCtx.currentTime;
-        if(t==='tap'){
-            // (Внутри playSfx - t==='tap' block)
-            const o=audioCtx.createOscillator();
-            const g=audioCtx.createGain();
-            o.type='square'; // Square wave for more 'distinct' character
-            // Установка гораздо более низкой частоты
-            o.frequency.setValueAtTime(80, n); // Low starting pitch
-            o.frequency.exponentialRampToValueAtTime(120, n+0.1); // Slight ramp-up
-            g.gain.setValueAtTime(0.5, n); // Slightly louder gain
-            g.gain.exponentialRampToValueAtTime(0.01, n+0.1); // Quick fade-out
-            o.connect(g);
-            g.connect(audioCtx.destination);
-            o.start(n);
-            o.stop(n+0.1);
-        }
-        else if(t==='correct'){
-            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.setValueAtTime(400,n);o.frequency.exponentialRampToValueAtTime(800,n+0.2);o.frequency.exponentialRampToValueAtTime(1200,n+0.4);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.5,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.4);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.4);
-        }
-        else if(t==='wrong'){
-            const s=audioCtx.createBufferSource(),b=audioCtx.createBuffer(1,audioCtx.sampleRate*0.8,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;s.buffer=b;const f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(1000,n);f.frequency.exponentialRampToValueAtTime(100,n+0.8);const g=audioCtx.createGain();g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.6,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.8);s.connect(f);f.connect(g);g.connect(audioCtx.destination);s.start(n);
-        }
-        else if(t==='clack'){
-            const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='square';o.frequency.setValueAtTime(100,n);o.frequency.exponentialRampToValueAtTime(20,n+0.1);g.gain.setValueAtTime(0.6,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.1);
-        }
-        else if(t==='victory'){
-            const d=audioCtx.createOscillator(),dg=audioCtx.createGain(),f=audioCtx.createBiquadFilter();d.type='sawtooth';d.frequency.setValueAtTime(65.41,n);d.frequency.exponentialRampToValueAtTime(130.81,n+3);f.type='lowpass';f.frequency.setValueAtTime(100,n);f.frequency.exponentialRampToValueAtTime(2000,n+2.5);dg.gain.setValueAtTime(0,n);dg.gain.linearRampToValueAtTime(0.2,n+1);dg.gain.exponentialRampToValueAtTime(0.01,n+3);d.connect(f);f.connect(dg);dg.connect(audioCtx.destination);d.start(n);d.stop(n+3);
-            setTimeout(()=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(523.25,n);o.frequency.exponentialRampToValueAtTime(1046.5,n+1);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.3,n+0.5);g.gain.exponentialRampToValueAtTime(0.01,n+1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+1);},1500);
-        }
+        if(!audioCtx) return; const n = audioCtx.currentTime;
+        if(t==='tap'){ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.setValueAtTime(150,n);o.frequency.exponentialRampToValueAtTime(30,n+0.15);g.gain.setValueAtTime(2.5,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.2);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.2); }
+        else if(t==='correct'){ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(600,n);o.frequency.exponentialRampToValueAtTime(1200,n+0.15);g.gain.setValueAtTime(0.3,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.3);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.3); }
+        else if(t==='wrong'){ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(150,n);g.gain.setValueAtTime(0.3,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.3);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.3); }
+        else if(t==='fly'){ const b=audioCtx.createBuffer(1,audioCtx.sampleRate*0.8,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<b.length;i++)d[i]=Math.random()*2-1;const s=audioCtx.createBufferSource();s.buffer=b;const f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(4000,n);f.frequency.exponentialRampToValueAtTime(100,n+0.6);f.Q.value=5;const g=audioCtx.createGain();g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.6,n+0.1);g.gain.exponentialRampToValueAtTime(0.01,n+0.8);s.connect(f);f.connect(g);g.connect(audioCtx.destination);s.start(n); }
+        else if(t==='clack'){ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='square';o.frequency.setValueAtTime(100,n);o.frequency.exponentialRampToValueAtTime(20,n+0.1);g.gain.setValueAtTime(0.6,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.1); }
+        else if(t==='victory'){ const d=audioCtx.createOscillator(),dg=audioCtx.createGain(),f=audioCtx.createBiquadFilter();d.type='sawtooth';d.frequency.setValueAtTime(65.41,n);d.frequency.exponentialRampToValueAtTime(130.81,n+3);f.type='lowpass';f.frequency.setValueAtTime(100,n);f.frequency.exponentialRampToValueAtTime(2000,n+2.5);dg.gain.setValueAtTime(0,n);dg.gain.linearRampToValueAtTime(0.5,n+0.5);dg.gain.exponentialRampToValueAtTime(0.01,n+4);d.connect(f);f.connect(dg);dg.connect(audioCtx.destination);d.start(n);d.stop(n+4); [261.63,392.00,523.25,783.99].forEach((fq,i)=>{ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(fq+(Math.random()*4-2),n);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(0.15,n+1+i*0.2);g.gain.exponentialRampToValueAtTime(0.01,n+4);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+4); }); }
     }
 </script>
 </body>
